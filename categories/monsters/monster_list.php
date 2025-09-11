@@ -224,15 +224,25 @@ include '../../includes/hero.php';
                         <a href="?page=<?= $currentPage - 1 ?>&level=<?= urlencode($levelFilter) ?>&undead=<?= urlencode($undeadFilter) ?>&weakAttr=<?= urlencode($weakAttrFilter) ?>&search=<?= urlencode($searchTerm) ?>" class="pagination-link pagination-prev">Previous</a>
                     <?php endif; ?>
                     
-                    <?php
-                    // Show page numbers
-                    $startPage = max(1, $currentPage - 2);
-                    $endPage = min($totalPages, $startPage + 4);
+                    <?php if ($currentPage > 10): ?>
+                        <a href="?page=<?= max(1, $currentPage - 10) ?>&level=<?= urlencode($levelFilter) ?>&undead=<?= urlencode($undeadFilter) ?>&weakAttr=<?= urlencode($weakAttrFilter) ?>&search=<?= urlencode($searchTerm) ?>" class="pagination-link">
+                            -10
+                        </a>
+                    <?php endif; ?>
                     
-                    // Adjust if we're near the end
-                    if ($endPage - $startPage < 4 && $startPage > 1) {
-                        $startPage = max(1, $endPage - 4);
-                    }
+                    <?php
+                    // Always show first page
+                    if ($currentPage > 3): ?>
+                        <a href="?page=1&level=<?= urlencode($levelFilter) ?>&undead=<?= urlencode($undeadFilter) ?>&weakAttr=<?= urlencode($weakAttrFilter) ?>&search=<?= urlencode($searchTerm) ?>" class="pagination-link">1</a>
+                        <?php if ($currentPage > 4): ?>
+                            <span class="pagination-ellipsis">...</span>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                    
+                    <?php
+                    // Show page numbers around current page
+                    $startPage = max(1, $currentPage - 1);
+                    $endPage = min($totalPages, $currentPage + 1);
                     
                     for ($i = $startPage; $i <= $endPage; $i++):
                     ?>
@@ -240,6 +250,21 @@ include '../../includes/hero.php';
                             <?= $i ?>
                         </a>
                     <?php endfor; ?>
+                    
+                    <?php
+                    // Show ellipsis and last page if needed
+                    if ($currentPage < $totalPages - 2): ?>
+                        <?php if ($currentPage < $totalPages - 3): ?>
+                            <span class="pagination-ellipsis">...</span>
+                        <?php endif; ?>
+                        <a href="?page=<?= $totalPages ?>&level=<?= urlencode($levelFilter) ?>&undead=<?= urlencode($undeadFilter) ?>&weakAttr=<?= urlencode($weakAttrFilter) ?>&search=<?= urlencode($searchTerm) ?>" class="pagination-link"><?= $totalPages ?></a>
+                    <?php endif; ?>
+                    
+                    <?php if ($currentPage + 10 <= $totalPages): ?>
+                        <a href="?page=<?= min($totalPages, $currentPage + 10) ?>&level=<?= urlencode($levelFilter) ?>&undead=<?= urlencode($undeadFilter) ?>&weakAttr=<?= urlencode($weakAttrFilter) ?>&search=<?= urlencode($searchTerm) ?>" class="pagination-link">
+                            +10
+                        </a>
+                    <?php endif; ?>
                     
                     <?php if ($currentPage < $totalPages): ?>
                         <a href="?page=<?= $currentPage + 1 ?>&level=<?= urlencode($levelFilter) ?>&undead=<?= urlencode($undeadFilter) ?>&weakAttr=<?= urlencode($weakAttrFilter) ?>&search=<?= urlencode($searchTerm) ?>" class="pagination-link pagination-next">Next</a>

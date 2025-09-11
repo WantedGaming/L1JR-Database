@@ -182,9 +182,45 @@ include '../../includes/hero.php';
                         <a href="?page=<?= $currentPage - 1 ?>&grade=<?= $gradeFilter ?>&type=<?= $typeFilter ?>&search=<?= urlencode($searchTerm) ?>" class="pagination-link pagination-prev">Previous</a>
                     <?php endif; ?>
                     
-                    <?php for ($i = max(1, $currentPage - 2); $i <= min($totalPages, $currentPage + 2); $i++): ?>
+                    <?php if ($currentPage > 10): ?>
+                        <a href="?page=<?= max(1, $currentPage - 10) ?>&grade=<?= $gradeFilter ?>&type=<?= $typeFilter ?>&search=<?= urlencode($searchTerm) ?>" class="pagination-link">
+                            -10
+                        </a>
+                    <?php endif; ?>
+                    
+                    <?php
+                    // Always show first page
+                    if ($currentPage > 3): ?>
+                        <a href="?page=1&grade=<?= $gradeFilter ?>&type=<?= $typeFilter ?>&search=<?= urlencode($searchTerm) ?>" class="pagination-link">1</a>
+                        <?php if ($currentPage > 4): ?>
+                            <span class="pagination-ellipsis">...</span>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                    
+                    <?php
+                    // Show page numbers around current page
+                    $startPage = max(1, $currentPage - 1);
+                    $endPage = min($totalPages, $currentPage + 1);
+                    
+                    for ($i = $startPage; $i <= $endPage; $i++):
+                    ?>
                         <a href="?page=<?= $i ?>&grade=<?= $gradeFilter ?>&type=<?= $typeFilter ?>&search=<?= urlencode($searchTerm) ?>" class="pagination-link <?= $i == $currentPage ? 'active' : '' ?>"><?= $i ?></a>
                     <?php endfor; ?>
+                    
+                    <?php
+                    // Show ellipsis and last page if needed
+                    if ($currentPage < $totalPages - 2): ?>
+                        <?php if ($currentPage < $totalPages - 3): ?>
+                            <span class="pagination-ellipsis">...</span>
+                        <?php endif; ?>
+                        <a href="?page=<?= $totalPages ?>&grade=<?= $gradeFilter ?>&type=<?= $typeFilter ?>&search=<?= urlencode($searchTerm) ?>" class="pagination-link"><?= $totalPages ?></a>
+                    <?php endif; ?>
+                    
+                    <?php if ($currentPage + 10 <= $totalPages): ?>
+                        <a href="?page=<?= min($totalPages, $currentPage + 10) ?>&grade=<?= $gradeFilter ?>&type=<?= $typeFilter ?>&search=<?= urlencode($searchTerm) ?>" class="pagination-link">
+                            +10
+                        </a>
+                    <?php endif; ?>
                     
                     <?php if ($currentPage < $totalPages): ?>
                         <a href="?page=<?= $currentPage + 1 ?>&grade=<?= $gradeFilter ?>&type=<?= $typeFilter ?>&search=<?= urlencode($searchTerm) ?>" class="pagination-link pagination-next">Next</a>

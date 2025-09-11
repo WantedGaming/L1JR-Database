@@ -586,6 +586,13 @@ footer {
     font-weight: bold;
 }
 
+.pagination-ellipsis {
+    display: inline-block;
+    padding: 0.5rem 0.5rem;
+    color: var(--text);
+    font-weight: bold;
+}
+
 /* Responsive Design for Table */
 @media (max-width: 768px) {
     .weapons-table {
