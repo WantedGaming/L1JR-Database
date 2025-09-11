@@ -160,7 +160,7 @@ include '../../includes/hero.php';
     
     <div class="weapons-list-container">
         <?php if (!empty($items)): ?>
-            <table class="weapons-table">
+            <table class="weapons-table clickable-rows">
                 <thead>
                     <tr>
                         <th class="icon-col">Icon</th>

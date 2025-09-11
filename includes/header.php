@@ -79,6 +79,7 @@ foreach ($css_paths as $path) {
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="icon" href="<?php echo $base_url; ?>assets/img/favicon/favicon.png" type="image/png">
     <script src="<?php echo $base_url; ?>assets/js/navigation.js" defer></script>
+    <script src="<?php echo $base_url; ?>assets/js/clickable-rows.js" defer></script>
     
     <!-- Emergency inline styles in case external CSS fails to load -->
     <style>

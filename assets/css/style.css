@@ -593,6 +593,16 @@ footer {
     font-weight: bold;
 }
 
+/* Clickable table rows */
+table.clickable-rows tbody tr.clickable {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+table.clickable-rows tbody tr.clickable:hover {
+    background-color: var(--hover);
+}
+
 /* Responsive Design for Table */
 @media (max-width: 768px) {
     .weapons-table {
