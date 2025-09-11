@@ -45,10 +45,20 @@ include '../../includes/hero.php';
     /* Spawn Locations Grid Layout */
     .spawn-locations-grid {
         display: grid;
-        grid-template-columns: repeat(2, 1fr); /* Two cards per row */
+        grid-template-columns: repeat(2, 1fr); /* Two cards per row by default */
         gap: 1.5rem;
         margin-top: 1rem;
         margin-bottom: 1.5rem;
+    }
+    
+    /* When there's only one location, make it take full width */
+    .spawn-locations-grid.single-location {
+        grid-template-columns: 1fr; /* One card taking full width */
+    }
+    
+    /* For single location cards, make them taller */
+    .spawn-locations-grid.single-location .spawn-location-card {
+        height: 250px; /* Taller card for single location */
     }
     
     /* Spawn Location Card */
@@ -736,8 +746,14 @@ include '../../includes/hero.php';
                     $spawnsByMap[$mapId]['spawns'][] = $spawn;
                 }
                 
-                if (!empty($spawnsByMap)): ?>
-                    <div class="spawn-locations-grid">
+                if (!empty($spawnsByMap)): 
+                    // Count total number of spawn locations
+                    $totalSpawnLocations = 0;
+                    foreach ($spawnsByMap as $mapData) {
+                        $totalSpawnLocations += count($mapData['spawns']);
+                    }
+                    ?>
+                    <div class="spawn-locations-grid <?= $totalSpawnLocations === 1 ? 'single-location' : '' ?>">
                         <?php foreach ($spawnsByMap as $mapId => $mapData): 
                             // Get the first spawn to get the map image ID
                             $firstSpawn = reset($mapData['spawns']);

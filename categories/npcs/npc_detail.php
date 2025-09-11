@@ -41,6 +41,120 @@ try {
 include '../../includes/hero.php';
 ?>
 
+<style>
+    /* Spawn Locations Grid Layout */
+    .spawn-locations-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* Two cards per row by default */
+        gap: 1.5rem;
+        margin-top: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    /* When there's only one location, make it take full width */
+    .spawn-locations-grid.single-location {
+        grid-template-columns: 1fr; /* One card taking full width */
+    }
+    
+    /* For single location cards, make them taller */
+    .spawn-locations-grid.single-location .spawn-location-card {
+        height: 250px; /* Taller card for single location */
+    }
+    
+    /* Spawn Location Card */
+    .spawn-location-card {
+        position: relative;
+        border-radius: 10px;
+        overflow: hidden;
+        height: 180px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .spawn-location-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(255, 110, 62, 0.3);
+    }
+    
+    .spawn-card-link {
+        display: block;
+        height: 100%;
+        width: 100%;
+        text-decoration: none;
+        color: #fff;
+    }
+    
+    .spawn-card-image {
+        position: relative;
+        height: 100%;
+        width: 100%;
+    }
+    
+    .spawn-card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    
+    .spawn-location-card:hover .spawn-card-image img {
+        transform: scale(1.1);
+    }
+    
+    /* Overlay for text */
+    .spawn-card-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 1rem;
+        background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 70%, rgba(0,0,0,0) 100%);
+        z-index: 2;
+    }
+    
+    .spawn-location-name {
+        font-size: 1.2rem;
+        margin: 0 0 0.5rem 0;
+        color: #fff;
+        font-weight: 600;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+    }
+    
+    .spawn-location-details {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .spawn-coordinates {
+        display: flex;
+        align-items: center;
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.9);
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    }
+    
+    .coordinate-icon {
+        margin-right: 0.3rem;
+    }
+    
+    .spawn-type {
+        background-color: rgba(255, 110, 62, 0.3);
+        color: #fff;
+        padding: 0.2rem 0.5rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        border: 1px solid rgba(255, 110, 62, 0.5);
+    }
+    
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .spawn-locations-grid {
+            grid-template-columns: 1fr; /* One card per row on smaller screens */
+        }
+    }
+</style>
+
 <main class="container weapon-detail-container">
     <!-- First Row: Image and Basic Info -->
     <div class="weapon-detail-row">
@@ -320,57 +434,48 @@ include '../../includes/hero.php';
                     $spawnsByMap[$mapId]['spawns'][] = $spawn;
                 }
                 
-                if (!empty($spawnsByMap)): ?>
-                    <div class="monster-drops-grid">
-                        <?php foreach ($spawnsByMap as $mapId => $mapData): ?>
-                            <div class="monster-drop-card">
-                                <div class="monster-card-content">
-                                    <div class="monster-image">
-                                        <?php 
-                                        // Get the first spawn in this map group to get the image ID
-                                        $firstSpawn = reset($mapData['spawns']);
-                                        $mapImageId = isset($firstSpawn['map_image_id']) ? $firstSpawn['map_image_id'] : 0;
-                                        
-                                        // Try to find the map image in different formats
-                                        $mapImagePath = "../../assets/img/icons/{$mapImageId}.png";
-                                        $mapImagePathJpg = "../../assets/img/icons/{$mapImageId}.jpg";
-                                        $mapImagePathJpeg = "../../assets/img/icons/{$mapImageId}.jpeg";
-                                        $placeholderImage = "../../assets/img/placeholders/maps.png";
-                                        ?>
-                                        <img src="<?= $mapImageId > 0 ? $mapImagePath : $placeholderImage ?>" 
-                                             onerror="if (this.src !== '<?= $mapImagePathJpg ?>') this.src='<?= $mapImagePathJpg ?>'; else if (this.src !== '<?= $mapImagePathJpeg ?>') this.src='<?= $mapImagePathJpeg ?>'; else this.src='<?= $placeholderImage ?>';"
-                                             alt="<?= htmlspecialchars($mapData['map_name']) ?>">
-                                    </div>
-                                    <div class="monster-info">
-                                        <h3 class="monster-name"><?= htmlspecialchars($mapData['map_name']) ?></h3>
-                                        <div class="monster-stats">
-                                            <?php foreach ($mapData['spawns'] as $index => $spawn): 
-                                                // Only show the first 3 spawn points per map to avoid clutter
-                                                if ($index < 3):
-                                            ?>
-                                                <div class="monster-stat">
-                                                    <span class="stat-icon">📍</span>
-                                                    <span class="stat-text"><?= $spawn['locx'] ?>, <?= $spawn['locy'] ?></span>
+                if (!empty($spawnsByMap)): 
+                    // Count total number of spawn locations
+                    $totalSpawnLocations = 0;
+                    foreach ($spawnsByMap as $mapData) {
+                        $totalSpawnLocations += count($mapData['spawns']);
+                    }
+                    ?>
+                    <div class="spawn-locations-grid <?= $totalSpawnLocations === 1 ? 'single-location' : '' ?>">
+                        <?php foreach ($spawnsByMap as $mapId => $mapData): 
+                            // Get the first spawn to get the map image ID
+                            $firstSpawn = reset($mapData['spawns']);
+                            $mapImageId = isset($firstSpawn['map_image_id']) ? $firstSpawn['map_image_id'] : 0;
+                            
+                            // Try to find the map image in different formats
+                            $mapImagePath = "../../assets/img/icons/{$mapImageId}.png";
+                            $mapImagePathJpg = "../../assets/img/icons/{$mapImageId}.jpg";
+                            $mapImagePathJpeg = "../../assets/img/icons/{$mapImageId}.jpeg";
+                            $placeholderImage = "../../assets/img/placeholders/maps.png";
+                            
+                            foreach ($mapData['spawns'] as $spawn): ?>
+                                <div class="spawn-location-card">
+                                    <a href="../../categories/maps/map_detail.php?id=<?= $mapId ?>" class="spawn-card-link">
+                                        <div class="spawn-card-image">
+                                            <img src="<?= $mapImageId > 0 ? $mapImagePath : $placeholderImage ?>" 
+                                                 onerror="if (this.src !== '<?= $mapImagePathJpg ?>') this.src='<?= $mapImagePathJpg ?>'; else if (this.src !== '<?= $mapImagePathJpeg ?>') this.src='<?= $mapImagePathJpeg ?>'; else this.src='<?= $placeholderImage ?>';"
+                                                 alt="<?= htmlspecialchars($mapData['map_name']) ?>">
+                                            <div class="spawn-card-overlay">
+                                                <h3 class="spawn-location-name"><?= htmlspecialchars($mapData['map_name']) ?></h3>
+                                                <div class="spawn-location-details">
+                                                    <div class="spawn-coordinates">
+                                                        <span class="coordinate-icon">📍</span>
+                                                        <span class="coordinate-text"><?= $spawn['locx'] ?>, <?= $spawn['locy'] ?></span>
+                                                    </div>
+                                                    <?php if (!empty($spawn['spawn_type']) && $spawn['spawn_type'] != 'Regular'): ?>
+                                                        <div class="spawn-type"><?= $spawn['spawn_type'] ?></div>
+                                                    <?php endif; ?>
                                                 </div>
-                                                <?php if (!empty($spawn['spawn_type']) && $spawn['spawn_type'] != 'Regular'): ?>
-                                                <div class="monster-stat">
-                                                    <span class="stat-icon">🏷️</span>
-                                                    <span class="stat-text"><?= $spawn['spawn_type'] ?></span>
-                                                </div>
-                                                <?php endif; ?>
-                                            <?php endif; ?>
-                                            <?php endforeach; ?>
-                                            
-                                            <?php if (count($mapData['spawns']) > 3): ?>
-                                            <div class="monster-stat drop-rate">
-                                                <span class="stat-icon">➕</span>
-                                                <span class="stat-text"><?= count($mapData['spawns']) - 3 ?> more locations</span>
                                             </div>
-                                            <?php endif; ?>
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
-                            </div>
+                            <?php endforeach; ?>
                         <?php endforeach; ?>
                     </div>
                 <?php else: ?>
