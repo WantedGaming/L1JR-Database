@@ -1,0 +1,45 @@
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `dungeon_random`
+--
+
+CREATE TABLE `dungeon_random` (
+  `src_x` int(10) NOT NULL DEFAULT 0,
+  `src_y` int(10) NOT NULL DEFAULT 0,
+  `src_mapid` int(10) NOT NULL DEFAULT 0,
+  `new_x1` int(10) NOT NULL DEFAULT 0,
+  `new_y1` int(10) NOT NULL DEFAULT 0,
+  `new_mapid1` int(10) NOT NULL DEFAULT 0,
+  `new_x2` int(10) NOT NULL DEFAULT 0,
+  `new_y2` int(10) NOT NULL DEFAULT 0,
+  `new_mapid2` int(10) NOT NULL DEFAULT 0,
+  `new_x3` int(10) NOT NULL DEFAULT 0,
+  `new_y3` int(10) NOT NULL DEFAULT 0,
+  `new_mapid3` int(10) NOT NULL DEFAULT 0,
+  `new_x4` int(10) NOT NULL DEFAULT 0,
+  `new_y4` int(10) NOT NULL DEFAULT 0,
+  `new_mapid4` int(10) NOT NULL DEFAULT 0,
+  `new_x5` int(10) NOT NULL DEFAULT 0,
+  `new_y5` int(10) NOT NULL DEFAULT 0,
+  `new_mapid5` int(10) NOT NULL DEFAULT 0,
+  `new_heading` int(10) NOT NULL DEFAULT 1,
+  `note` varchar(50) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `dungeon_random`
+--
+
+INSERT INTO `dungeon_random` (`src_x`, `src_y`, `src_mapid`, `new_x1`, `new_y1`, `new_mapid1`, `new_x2`, `new_y2`, `new_mapid2`, `new_x3`, `new_y3`, `new_mapid3`, `new_x4`, `new_y4`, `new_mapid4`, `new_x5`, `new_y5`, `new_mapid5`, `new_heading`, `note`) VALUES
+(32769, 32869, 5140, 32774, 32797, 5140, 32773, 32817, 5140, 32784, 32831, 5140, 32776, 32857, 5140, 32783, 32874, 5140, 2, 'Goblin Mansion: Start -> Middle'),
+(32770, 32788, 5140, 32774, 32797, 5140, 32773, 32817, 5140, 32784, 32831, 5140, 32776, 32857, 5140, 32783, 32874, 5140, 2, 'Goblin Mansion: Start -> Middle'),
+(32770, 32807, 5140, 32774, 32797, 5140, 32773, 32817, 5140, 32784, 32831, 5140, 32776, 32857, 5140, 32783, 32874, 5140, 2, 'Goblin Mansion: Start -> Middle'),
+(32772, 32846, 5140, 32774, 32797, 5140, 32773, 32817, 5140, 32784, 32831, 5140, 32776, 32857, 5140, 32783, 32874, 5140, 2, 'Goblin Mansion: Start -> Middle'),
+(32774, 32830, 5140, 32774, 32797, 5140, 32773, 32817, 5140, 32784, 32831, 5140, 32776, 32857, 5140, 32783, 32874, 5140, 2, 'Goblin Mansion: Start -> Middle'),
+(32815, 32873, 5140, 32835, 32788, 5140, 32834, 32807, 5140, 32827, 32828, 5140, 32823, 32849, 5140, 32828, 32875, 5140, 2, 'Goblin Mansion: Middle part -> Bone part'),
+(32816, 32859, 5140, 32835, 32788, 5140, 32834, 32807, 5140, 32827, 32828, 5140, 32823, 32849, 5140, 32828, 32875, 5140, 2, 'Goblin Mansion: Middle part -> Bone part'),
+(32821, 32819, 5140, 32835, 32788, 5140, 32834, 32807, 5140, 32827, 32828, 5140, 32823, 32849, 5140, 32828, 32875, 5140, 2, 'Goblin Mansion: Middle part -> Bone part'),
+(32822, 32840, 5140, 32835, 32788, 5140, 32834, 32807, 5140, 32827, 32828, 5140, 32823, 32849, 5140, 32828, 32875, 5140, 2, 'Goblin Mansion: Middle part -> Bone part'),
+(32824, 32796, 5140, 32835, 32788, 5140, 32834, 32807, 5140, 32827, 32828, 5140, 32823, 32849, 5140, 32828, 32875, 5140, 2, 'Goblin Mansion: Middle part -> Bone part');
