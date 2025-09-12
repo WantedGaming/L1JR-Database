@@ -781,9 +781,7 @@ table.clickable-rows tbody tr.clickable:hover {
 
 
 /* Weapon Detail Styles */
-.weapon-detail-container {
-    padding-top: 3.5rem; /* Increased padding between hero and first row */
-}
+/* .weapon-detail-container - Padding is now handled by .detail-container */
 
 .weapon-detail-row {
     display: grid;
