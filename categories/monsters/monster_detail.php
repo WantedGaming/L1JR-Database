@@ -48,10 +48,10 @@ include '../../includes/hero.php';
         <!-- Image Card -->
         <div class="weapon-image-card detail-card full-image-card">
             <div class="weapon-image-large">
-                <img src="../../assets/img/icons/<?= $monster['spriteId'] ?>.png" 
+                <img src="../../assets/img/icons/ms<?= $monster['spriteId'] ?>.png" 
                      alt="<?= htmlspecialchars(getDisplayName($monster['desc_en'])) ?>" 
                      loading="eager"
-                     onerror="this.onerror=null; this.src='../../assets/img/icons/<?= $monster['spriteId'] ?>.gif'; this.onerror=function(){this.src='../../assets/img/placeholders/monsters.png';}">
+                     onerror="this.onerror=null; this.src='../../assets/img/icons/ms<?= $monster['spriteId'] ?>.gif'; this.onerror=function(){this.src='../../assets/img/placeholders/monsters.png';}">
             </div>
             
             <!-- Add these columns at the bottom of the image card -->

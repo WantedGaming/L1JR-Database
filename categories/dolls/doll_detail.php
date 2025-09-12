@@ -17,10 +17,27 @@ if (!$dollId) {
 
 // Fetch doll details from database
 try {
-    $stmt = $pdo->prepare("SELECT * FROM npc WHERE npcid = :id AND impl = 'L1Doll'");
+    $stmt = $pdo->prepare("SELECT n.*, e.iconId, m.itemId as etcItemId, m.grade, m.bonusItemId, m.bonusCount, m.bonusInterval, m.damageChance, m.attackSkillEffectId, m.haste
+                          FROM npc n
+                          LEFT JOIN magicdoll_info m ON n.npcid = m.dollNpcId
+                          LEFT JOIN etcitem e ON m.itemId = e.item_id
+                          WHERE n.npcid = :id AND n.impl = 'L1Doll'");
     $stmt->bindValue(':id', $dollId, PDO::PARAM_INT);
     $stmt->execute();
     $doll = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    // Get potential upgrades for this doll
+    $potentialUpgrades = [];
+    if (!empty($doll['etcItemId'])) {
+        // First, get the potential bonuses from the magicdoll_potential table
+        $potentialStmt = $pdo->prepare("
+            SELECT * FROM magicdoll_potential 
+            WHERE isUse = 'true' 
+            ORDER BY bonusId ASC
+        ");
+        $potentialStmt->execute();
+        $potentialUpgrades = $potentialStmt->fetchAll(PDO::FETCH_ASSOC);
+    }
     
     if (!$doll) {
         echo "<div class='error-message'>Magic doll not found.</div>";
@@ -47,7 +64,7 @@ include '../../includes/hero.php';
         <!-- Image Card -->
         <div class="weapon-image-card detail-card full-image-card">
             <div class="weapon-image-large">
-                <img src="../../assets/img/icons/<?= $doll['spriteId'] ?>.png" 
+                <img src="../../assets/img/icons/<?= $doll['iconId'] ? $doll['iconId'] : $doll['spriteId'] ?>.png" 
                      alt="<?= htmlspecialchars(getDisplayName($doll['desc_en'])) ?>" 
                      onerror="this.src='../../assets/img/placeholders/dolls.png'">
             </div>
@@ -57,6 +74,10 @@ include '../../includes/hero.php';
                 <div class="info-item">
                     <span class="info-label">Doll ID:</span>
                     <span class="info-value"><?= $doll['npcid'] ?></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Icon ID:</span>
+                    <span class="info-value"><?= $doll['iconId'] ?: 'N/A' ?></span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Sprite ID:</span>
@@ -254,6 +275,397 @@ include '../../includes/hero.php';
             </div>
         </div>
     </div>
+    <?php endif; ?>
+    
+    <!-- Magic Doll Info Section -->
+    <?php if (!empty($doll['etcItemId'])): ?>
+    <div class="weapon-detail-row">
+        <div class="weapon-info-card detail-card full-width">
+            <h3 class="detail-card-title">
+                <span class="title-icon">✨</span>
+                Magic Doll Information
+            </h3>
+            <div class="stats-grid">
+                <?php if ($doll['grade'] > 0): ?>
+                <div class="stat-item">
+                    <span class="stat-label">Grade:</span>
+                    <span class="stat-value"><?= $doll['grade'] ?></span>
+                </div>
+                <?php endif; ?>
+                
+                <?php if ($doll['haste'] === 'true'): ?>
+                <div class="stat-item">
+                    <span class="stat-label">Haste:</span>
+                    <span class="stat-value property-yes">✓</span>
+                </div>
+                <?php endif; ?>
+                
+                <?php if ($doll['bonusItemId'] > 0): ?>
+                <div class="stat-item">
+                    <span class="stat-label">Bonus Item ID:</span>
+                    <span class="stat-value"><?= $doll['bonusItemId'] ?></span>
+                </div>
+                <?php endif; ?>
+                
+                <?php if ($doll['bonusCount'] > 0): ?>
+                <div class="stat-item">
+                    <span class="stat-label">Bonus Count:</span>
+                    <span class="stat-value"><?= $doll['bonusCount'] ?></span>
+                </div>
+                <?php endif; ?>
+                
+                <?php if ($doll['bonusInterval'] > 0): ?>
+                <div class="stat-item">
+                    <span class="stat-label">Bonus Interval:</span>
+                    <span class="stat-value"><?= $doll['bonusInterval'] ?> seconds</span>
+                </div>
+                <?php endif; ?>
+                
+                <?php if ($doll['damageChance'] > 0): ?>
+                <div class="stat-item">
+                    <span class="stat-label">Damage Chance:</span>
+                    <span class="stat-value"><?= $doll['damageChance'] ?>%</span>
+                </div>
+                <?php endif; ?>
+                
+                <?php if ($doll['attackSkillEffectId'] > 0): ?>
+                <div class="stat-item">
+                    <span class="stat-label">Attack Skill Effect ID:</span>
+                    <span class="stat-value"><?= $doll['attackSkillEffectId'] ?></span>
+                </div>
+                <?php endif; ?>
+                
+                <?php if ($doll['etcItemId'] > 0): ?>
+                <div class="stat-item">
+                    <span class="stat-label">Item ID:</span>
+                    <span class="stat-value"><?= $doll['etcItemId'] ?></span>
+                </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Potential Upgrades Section -->
+    <?php if (!empty($potentialUpgrades)): ?>
+    <div class="weapon-detail-row">
+        <div class="weapon-info-card detail-card full-width">
+            <h3 class="detail-card-title">
+                <span class="title-icon">🔮</span>
+                Potential Upgrades
+            </h3>
+            
+            <?php
+            // Organize potentials by category
+            $categories = [
+                'combat' => ['Combat Enhancements', []],
+                'stats' => ['Stat Boosts', []],
+                'defense' => ['Defensive Abilities', []],
+                'special' => ['Special Abilities', []],
+                'other' => ['Other Enhancements', []]
+            ];
+            
+            // Sort potentials into categories
+            foreach ($potentialUpgrades as $potential) {
+                // Skip empty potentials
+                $hasStats = false;
+                
+                // Check if this potential has any stats
+                foreach ($potential as $key => $value) {
+                    if ($key != 'bonusId' && $key != 'name' && $key != 'desc_kr' && $key != 'isUse' && 
+                        $value != 0 && $value != '0' && $value != 'false' && $value != -1) {
+                        $hasStats = true;
+                        break;
+                    }
+                }
+                
+                if (!$hasStats) continue;
+                
+                // Determine category based on stats
+                $category = 'other';
+                
+                if ($potential['shortDamage'] > 0 || $potential['shortHit'] > 0 || 
+                    $potential['longDamage'] > 0 || $potential['longHit'] > 0 || 
+                    $potential['shortCritical'] > 0 || $potential['longCritical'] > 0 ||
+                    $potential['spellpower'] > 0 || $potential['magicHit'] > 0 ||
+                    $potential['magicCritical'] > 0 || $potential['PVPDamage'] > 0) {
+                    $category = 'combat';
+                } else if ($potential['str'] > 0 || $potential['con'] > 0 || 
+                          $potential['dex'] > 0 || $potential['int'] > 0 || 
+                          $potential['wis'] > 0 || $potential['cha'] > 0 || 
+                          $potential['allStatus'] > 0) {
+                    $category = 'stats';
+                } else if ($potential['ac_bonus'] != 0 || $potential['mr'] > 0 || 
+                          $potential['reduction'] > 0 || $potential['PVPReduction'] > 0 || 
+                          $potential['dg'] > 0 || $potential['er'] > 0 ||
+                          $potential['toleranceAll'] > 0) {
+                    $category = 'defense';
+                } else if ($potential['firstSpeed'] === 'true' || $potential['secondSpeed'] === 'true' || 
+                          $potential['thirdSpeed'] === 'true' || $potential['forthSpeed'] === 'true' ||
+                          $potential['skilId'] > 0) {
+                    $category = 'special';
+                }
+                
+                $categories[$category][1][] = $potential;
+            }
+            
+            // Display potentials by category
+            foreach ($categories as $categoryKey => $categoryData):
+                list($categoryName, $potentials) = $categoryData;
+                
+                // Skip empty categories
+                if (empty($potentials)) continue;
+            ?>
+            <div class="doll-potential-category">
+                <h4 class="category-title"><?= $categoryName ?></h4>
+                <div class="monster-drops-grid">
+                    <?php foreach ($potentials as $potential): ?>
+                    <div class="monster-drop-card">
+                        <div class="monster-card-content">
+                            <div class="monster-image">
+                                <?php 
+                                // Choose an appropriate icon based on category
+                                $icon = '⚔️';
+                                if ($categoryKey === 'stats') $icon = '📊';
+                                if ($categoryKey === 'defense') $icon = '🛡️';
+                                if ($categoryKey === 'special') $icon = '✨';
+                                if ($categoryKey === 'other') $icon = '🔮';
+                                ?>
+                                <div class="potential-icon"><?= $icon ?></div>
+                            </div>
+                            <div class="monster-info">
+                                <h3 class="monster-name"><?= htmlspecialchars($potential['name']) ?></h3>
+                                <div class="monster-stats">
+                        <?php 
+                        // Display relevant stats for this potential
+                        if ($potential['ac_bonus'] != 0): 
+                            $acClass = $potential['ac_bonus'] < 0 ? 'positive' : 'negative'; // For AC, negative is good
+                        ?>
+                            <div class="monster-stat <?= $acClass ?>">
+                                <span class="stat-icon">🛡️</span>
+                                <span class="stat-text">AC: <?= $potential['ac_bonus'] ?></span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($potential['str'] > 0): ?>
+                            <div class="monster-stat positive">
+                                <span class="stat-icon">💪</span>
+                                <span class="stat-text">STR: +<?= $potential['str'] ?></span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($potential['con'] > 0): ?>
+                            <div class="monster-stat positive">
+                                <span class="stat-icon">❤️</span>
+                                <span class="stat-text">CON: +<?= $potential['con'] ?></span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($potential['dex'] > 0): ?>
+                            <div class="monster-stat positive">
+                                <span class="stat-icon">🏃</span>
+                                <span class="stat-text">DEX: +<?= $potential['dex'] ?></span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($potential['int'] > 0): ?>
+                            <div class="monster-stat positive">
+                                <span class="stat-icon">🧠</span>
+                                <span class="stat-text">INT: +<?= $potential['int'] ?></span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($potential['wis'] > 0): ?>
+                            <div class="monster-stat positive">
+                                <span class="stat-icon">📚</span>
+                                <span class="stat-text">WIS: +<?= $potential['wis'] ?></span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($potential['cha'] > 0): ?>
+                            <div class="monster-stat positive">
+                                <span class="stat-icon">👑</span>
+                                <span class="stat-text">CHA: +<?= $potential['cha'] ?></span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($potential['allStatus'] > 0): ?>
+                            <div class="monster-stat positive">
+                                <span class="stat-icon">⭐</span>
+                                <span class="stat-text">All Stats: +<?= $potential['allStatus'] ?></span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($potential['shortDamage'] > 0): ?>
+                            <div class="monster-stat positive">
+                                <span class="stat-icon">⚔️</span>
+                                <span class="stat-text">DMG: +<?= $potential['shortDamage'] ?></span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($potential['shortHit'] > 0): ?>
+                            <div class="monster-stat positive">
+                                <span class="stat-icon">🎯</span>
+                                <span class="stat-text">Hit: +<?= $potential['shortHit'] ?></span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($potential['shortCritical'] > 0): ?>
+                            <div class="monster-stat positive">
+                                <span class="stat-icon">💥</span>
+                                <span class="stat-text">Crit: +<?= $potential['shortCritical'] ?></span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($potential['longDamage'] > 0): ?>
+                            <div class="monster-stat positive">
+                                <span class="stat-icon">🏹</span>
+                                <span class="stat-text">R-DMG: +<?= $potential['longDamage'] ?></span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($potential['longHit'] > 0): ?>
+                            <div class="monster-stat positive">
+                                <span class="stat-icon">🎯</span>
+                                <span class="stat-text">R-Hit: +<?= $potential['longHit'] ?></span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($potential['longCritical'] > 0): ?>
+                            <div class="monster-stat positive">
+                                <span class="stat-icon">💥</span>
+                                <span class="stat-text">R-Crit: +<?= $potential['longCritical'] ?></span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($potential['spellpower'] > 0): ?>
+                            <div class="monster-stat positive">
+                                <span class="stat-icon">✨</span>
+                                <span class="stat-text">SP: +<?= $potential['spellpower'] ?></span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($potential['magicHit'] > 0): ?>
+                            <div class="monster-stat positive">
+                                <span class="stat-icon">🔮</span>
+                                <span class="stat-text">M-Hit: +<?= $potential['magicHit'] ?></span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($potential['magicCritical'] > 0): ?>
+                            <div class="monster-stat positive">
+                                <span class="stat-icon">💫</span>
+                                <span class="stat-text">M-Crit: +<?= $potential['magicCritical'] ?></span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($potential['hp'] > 0): ?>
+                            <div class="monster-stat positive">
+                                <span class="stat-icon">❤️</span>
+                                <span class="stat-text">HP: +<?= $potential['hp'] ?></span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($potential['mp'] > 0): ?>
+                            <div class="monster-stat positive">
+                                <span class="stat-icon">🔵</span>
+                                <span class="stat-text">MP: +<?= $potential['mp'] ?></span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($potential['hpr'] > 0): ?>
+                            <div class="monster-stat positive">
+                                <span class="stat-icon">♻️</span>
+                                <span class="stat-text">HP Regen: +<?= $potential['hpr'] ?></span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($potential['mpr'] > 0): ?>
+                            <div class="monster-stat positive">
+                                <span class="stat-icon">♻️</span>
+                                <span class="stat-text">MP Regen: +<?= $potential['mpr'] ?></span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($potential['mr'] > 0): ?>
+                            <div class="monster-stat positive">
+                                <span class="stat-icon">🔰</span>
+                                <span class="stat-text">MR: +<?= $potential['mr'] ?></span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($potential['expBonus'] > 0): ?>
+                            <div class="monster-stat positive">
+                                <span class="stat-icon">🌟</span>
+                                <span class="stat-text">EXP: +<?= $potential['expBonus'] ?>%</span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($potential['carryBonus'] > 0): ?>
+                            <div class="monster-stat positive">
+                                <span class="stat-icon">💰</span>
+                                <span class="stat-text">Weight: +<?= $potential['carryBonus'] ?></span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($potential['dg'] > 0): ?>
+                            <div class="monster-stat positive">
+                                <span class="stat-icon">🙅</span>
+                                <span class="stat-text">DG: +<?= $potential['dg'] ?></span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($potential['er'] > 0): ?>
+                            <div class="monster-stat positive">
+                                <span class="stat-icon">🏃</span>
+                                <span class="stat-text">ER: +<?= $potential['er'] ?></span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($potential['reduction'] > 0): ?>
+                            <div class="monster-stat positive">
+                                <span class="stat-icon">🛡️</span>
+                                <span class="stat-text">DMG Red: +<?= $potential['reduction'] ?></span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($potential['firstSpeed'] === 'true'): ?>
+                            <div class="monster-stat special">
+                                <span class="stat-icon">💨</span>
+                                <span class="stat-text">1st Speed</span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($potential['secondSpeed'] === 'true'): ?>
+                            <div class="monster-stat special">
+                                <span class="stat-icon">💨</span>
+                                <span class="stat-text">2nd Speed</span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($potential['thirdSpeed'] === 'true'): ?>
+                            <div class="monster-stat special">
+                                <span class="stat-icon">💨</span>
+                                <span class="stat-text">3rd Speed</span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if ($potential['forthSpeed'] === 'true'): ?>
+                            <div class="monster-stat special">
+                                <span class="stat-icon">💨</span>
+                                <span class="stat-text">4th Speed</span>
+                            </div>
+                        <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+    <?php endif; ?>
     <?php endif; ?>
     
     <!-- Notes Section -->

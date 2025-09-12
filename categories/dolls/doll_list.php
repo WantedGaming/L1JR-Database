@@ -40,7 +40,11 @@ if (!empty($searchTerm)) {
 // Database query with pagination and filters
 try {
     // Get total number of dolls with filters
-    $countSql = "SELECT COUNT(*) FROM npc $whereClause";
+    $countSql = "SELECT COUNT(*) 
+                FROM npc n 
+                LEFT JOIN magicdoll_info m ON n.npcid = m.dollNpcId
+                LEFT JOIN etcitem e ON m.itemId = e.item_id
+                $whereClause";
     $countStmt = $pdo->prepare($countSql);
     foreach ($params as $key => $value) {
         $countStmt->bindValue($key, $value);
@@ -57,7 +61,13 @@ try {
     }
     
     // Get dolls for current page with filters
-    $sql = "SELECT * FROM npc $whereClause ORDER BY lvl ASC, desc_en ASC LIMIT :limit OFFSET :offset";
+    $sql = "SELECT n.*, e.iconId 
+            FROM npc n 
+            LEFT JOIN magicdoll_info m ON n.npcid = m.dollNpcId
+            LEFT JOIN etcitem e ON m.itemId = e.item_id
+            $whereClause 
+            ORDER BY n.lvl ASC, n.desc_en ASC 
+            LIMIT :limit OFFSET :offset";
     $stmt = $pdo->prepare($sql);
     
     // Bind filter parameters
@@ -150,7 +160,7 @@ include '../../includes/hero.php';
                         <tr class="weapon-row">
                             <td class="weapon-icon">
                                 <a href="doll_detail.php?id=<?= $doll['npcid'] ?>">
-                                    <img src="../../assets/img/icons/<?= $doll['spriteId'] ?>.png" 
+                                    <img src="../../assets/img/icons/<?= $doll['iconId'] ? $doll['iconId'] : $doll['spriteId'] ?>.png" 
                                          alt="<?= htmlspecialchars(getDisplayName($doll['desc_en'])) ?>" 
                                          onerror="this.src='../../assets/img/placeholders/dolls.png'">
                                 </a>

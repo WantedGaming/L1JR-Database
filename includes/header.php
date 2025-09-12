@@ -60,6 +60,9 @@ $css_paths = [
     $_SERVER['DOCUMENT_ROOT'] . '/assets/css/style.css'
 ];
 
+// Check if we're on a doll page
+$is_doll_page = strpos($_SERVER['SCRIPT_NAME'], 'dolls') !== false;
+
 foreach ($css_paths as $path) {
     echo "<!-- CSS path check: $path - " . (file_exists($path) ? "EXISTS" : "NOT FOUND") . " -->";
 }
@@ -77,6 +80,16 @@ foreach ($css_paths as $path) {
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/style.css">
+    
+    <?php if ($is_doll_page): ?>
+    <!-- Doll-specific CSS -->
+    <link rel="stylesheet" href="<?php echo $base_url; ?>assets/css/doll.css">
+    <link rel="stylesheet" href="/L1JR-Database/assets/css/doll.css">
+    <link rel="stylesheet" href="/assets/css/doll.css">
+    <link rel="stylesheet" href="../../assets/css/doll.css">
+    <link rel="stylesheet" href="../assets/css/doll.css">
+    <?php endif; ?>
+    
     <link rel="icon" href="<?php echo $base_url; ?>assets/img/favicon/favicon.png" type="image/png">
     <script src="<?php echo $base_url; ?>assets/js/navigation.js" defer></script>
     <script src="<?php echo $base_url; ?>assets/js/clickable-rows.js" defer></script>
