@@ -45,8 +45,8 @@ include '../../includes/hero.php';
     <!-- First Row: Image and Basic Info -->
     <div class="weapon-detail-row">
         <!-- Image Card -->
-        <div class="weapon-image-card detail-card full-image-card" style="display: flex; flex-direction: column;">
-            <div class="weapon-image-large" style="flex: 1; display: flex; align-items: center; justify-content: center;">
+        <div class="weapon-image-card detail-card full-image-card">
+            <div class="weapon-image-large">
                 <img src="../../assets/img/icons/<?= $armor['iconId'] ?>.png" 
                      alt="<?= htmlspecialchars(getDisplayName($armor['desc_en'])) ?>" 
                      onerror="this.src='../../assets/img/placeholders/armor.png'">
