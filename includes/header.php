@@ -116,22 +116,22 @@ foreach ($css_paths as $path) {
                 <ul class="nav-menu">
                     <li><a href="<?php echo $base_url; ?>index.php">Home</a></li>
                     <li class="dropdown">
-                        <a href="javascript:void(0)" class="dropdown-toggle">Equipment</a>
-                        <ul class="dropdown-menu">
+                        <a href="javascript:void(0)" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Equipment</a>
+                        <ul class="dropdown-menu" aria-label="Equipment submenu">
                             <li><a href="<?php echo $base_url; ?>categories/weapon/weapon_list.php">Weapons</a></li>
                             <li><a href="<?php echo $base_url; ?>categories/armor/armor_list.php">Armor</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a href="javascript:void(0)" class="dropdown-toggle">Game Data</a>
-                        <ul class="dropdown-menu">
+                        <a href="javascript:void(0)" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Game Data</a>
+                        <ul class="dropdown-menu" aria-label="Game Data submenu">
                             <li><a href="<?php echo $base_url; ?>categories/items/item_list.php">Items</a></li>
                             <li><a href="<?php echo $base_url; ?>categories/dolls/doll_list.php">Dolls</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a href="javascript:void(0)" class="dropdown-toggle">World</a>
-                        <ul class="dropdown-menu">
+                        <a href="javascript:void(0)" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">World</a>
+                        <ul class="dropdown-menu" aria-label="World submenu">
                             <li><a href="<?php echo $base_url; ?>categories/monsters/monster_list.php">Monsters</a></li>
                             <li><a href="<?php echo $base_url; ?>categories/npcs/npc_list.php">NPCs</a></li>
                             <li><a href="<?php echo $base_url; ?>categories/maps/maps_list.php">Maps</a></li>
