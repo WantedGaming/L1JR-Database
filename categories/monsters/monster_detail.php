@@ -42,7 +42,7 @@ include '../../includes/hero.php';
 ?>
 
 
-<main class="container weapon-detail-container">
+<main class="container weapon-detail-container detail-container">
     <!-- First Row: Image and Basic Info -->
     <div class="weapon-detail-row">
         <!-- Image Card -->

@@ -27,46 +27,6 @@ body {
     padding: 0 15px;
 }
 
-/* Base Grid System */
-.grid {
-    display: grid;
-    gap: 1.5rem;
-}
-
-/* Detail Container - Common Styles */
-.detail-container {
-    padding-top: 3.5rem; /* Consistent padding between hero and first row */
-    padding-bottom: 2rem;
-}
-
-/* Standard 3-column grid */
-.grid-3 {
-    grid-template-columns: repeat(3, 1fr);
-}
-
-/* Standard 2-column grid */
-.grid-2 {
-    grid-template-columns: repeat(2, 1fr);
-}
-
-/* Auto-fill grid with minimum column width */
-.grid-auto {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-}
-
-/* Responsive grid adjustments */
-@media (max-width: 992px) {
-    .grid-3 {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 768px) {
-    .grid-3, .grid-2 {
-        grid-template-columns: 1fr;
-    }
-}
-
 /* Header Styles */
 header {
     background-color: var(--primary);
@@ -549,6 +509,7 @@ footer {
     }
 }
 
+/* Add to assets/css/style.css */
 
 /* Weapons List View Styles */
 .weapons-list-container {
@@ -681,6 +642,7 @@ table.clickable-rows tbody tr.clickable:hover {
         padding: 0.6rem 1rem;
     }
 }
+/* Add to assets/css/style.css */
 
 /* Filter Form Styles */
 .filter-form input,
@@ -766,10 +728,11 @@ table.clickable-rows tbody tr.clickable:hover {
     /* No grid-column to maintain original layout */
 }
 
+/* Add to assets/css/style.css */
 
 /* Weapon Detail Styles */
 .weapon-detail-container {
-    padding-top: 3.5rem; /* Increased padding between hero and first row */
+    padding-top: 2rem;
 }
 
 .weapon-detail-row {
@@ -779,7 +742,6 @@ table.clickable-rows tbody tr.clickable:hover {
     margin-bottom: 2rem;
 }
 
-/* Detail Card - Consolidated */
 .detail-card {
     background-color: var(--secondary);
     border-radius: 12px;
@@ -789,17 +751,40 @@ table.clickable-rows tbody tr.clickable:hover {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Image Card Styles - Consolidated */
-.weapon-image-card {
+/* Image Card Styles */
+.weapon-image-card.full-image-card {
     display: flex;
     flex-direction: column;
 }
 
-.weapon-image-card.full-image-card {
+.weapon-image-large {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-card-info {
+    margin-top: auto;
+    display: flex;
+    width: 100%;
+}
+
+.image-card-info .info-item {
+    flex: 1;
+    text-align: center;
+}
+
+.detail-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Full image card styling */
+.full-image-card {
     padding: 0;
     overflow: hidden;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
 }
@@ -807,7 +792,6 @@ table.clickable-rows tbody tr.clickable:hover {
 .weapon-image-large {
     width: 100%;
     height: 100%;
-    flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -827,23 +811,6 @@ table.clickable-rows tbody tr.clickable:hover {
     filter: drop-shadow(0 0 20px rgba(255, 110, 62, 0.6));
 }
 
-.image-card-info {
-    margin-top: auto;
-    display: flex;
-    width: 100%;
-}
-
-.image-card-info .info-item {
-    flex: 1;
-    text-align: center;
-}
-
-.detail-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-}
-
-/* Detail Card Title - Consolidated */
 .detail-card-title {
     color: var(--accent);
     margin-bottom: 1.5rem;
@@ -1009,19 +976,7 @@ table.clickable-rows tbody tr.clickable:hover {
     gap: 0.8rem;
 }
 
-/* Base Property Item */
 .property-item {
-    padding: 0.8rem;
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 6px;
-    transition: background 0.2s ease;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-/* Accent Property Item */
-.property-item.accent {
     padding: 1rem;
     background: linear-gradient(145deg, rgba(255, 110, 62, 0.15), rgba(255, 110, 62, 0.1));
     border-radius: 8px;
@@ -1110,6 +1065,7 @@ table.clickable-rows tbody tr.clickable:hover {
         min-height: 250px;
     }
 }
+/* Add to assets/css/style.css */
 
 /* Additional styling for new weapon stats */
 .highlight {
@@ -1154,18 +1110,48 @@ table.clickable-rows tbody tr.clickable:hover {
     }
 }
 
-/* Section title styles are now consolidated above */
+/* Section title improvements */
+.detail-card-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 2px solid rgba(255, 110, 62, 0.3);
+}
 
+.title-icon {
+    font-size: 1.4rem;
+}
 
-/* Additional Image Card Styles */
+/* Add to assets/css/style.css */
+
+/* Style for the image card with bottom-aligned info */
+.weapon-image-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.weapon-image-large {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .image-card-info {
     padding: 1rem;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     background: rgba(0, 0, 0, 0.2);
+    margin-top: auto; /* This pushes the info to the bottom */
+    display: flex;
+    width: 100%;
     box-sizing: border-box;
 }
 
 .image-card-info .info-item {
+    flex: 1;
+    text-align: center;
     padding: 0.5rem;
 }
 
@@ -1178,6 +1164,7 @@ table.clickable-rows tbody tr.clickable:hover {
 
 .image-card-info .info-value {
     display: block;
+    /* Using default font - no special font-family */
     color: var(--text);
 }
 
@@ -1201,6 +1188,7 @@ table.clickable-rows tbody tr.clickable:hover {
     }
 }
 
+/* Add to assets/css/style.css */
 
 .properties-grid {
     display: grid;
@@ -1208,7 +1196,15 @@ table.clickable-rows tbody tr.clickable:hover {
     gap: 1rem;
 }
 
-/* Property item styles are now consolidated above */
+.property-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    transition: background 0.2s ease;
+}
 
 .property-item:hover {
     background: rgba(255, 110, 62, 0.1);
@@ -1721,8 +1717,7 @@ table.clickable-rows tbody tr.clickable:hover {
 
 /* Armor Detail Styles */
 .armor-detail-container {
-    padding-top: 3.5rem; /* Increased padding between hero and first row */
-    padding-bottom: 2rem;
+    padding: 20px 0;
 }
 
 .armor-detail-row {
@@ -1731,7 +1726,14 @@ table.clickable-rows tbody tr.clickable:hover {
     margin-bottom: 20px;
 }
 
-/* Detail card styles are now consolidated above */
+.detail-card {
+    background-color: var(--secondary);
+    border-radius: 12px;
+    padding: 1.8rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
 .armor-image-card {
     flex: 0 0 250px;
