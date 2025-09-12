@@ -45,20 +45,20 @@ include '../../includes/hero.php';
     <!-- First Row: Image and Basic Info -->
     <div class="weapon-detail-row">
         <!-- Image Card -->
-        <div class="weapon-image-card detail-card full-image-card" style="display: flex; flex-direction: column;">
-            <div class="weapon-image-large" style="flex: 1; display: flex; align-items: center; justify-content: center;">
+        <div class="weapon-image-card detail-card full-image-card">
+            <div class="weapon-image-large">
                 <img src="../../assets/img/icons/<?= $map['pngId'] ?>.png" 
                      alt="<?= htmlspecialchars($map['locationname']) ?>" 
                      onerror="this.onerror=null; this.src='../../assets/img/icons/<?= $map['pngId'] ?>.gif'; this.onerror=function(){this.src='../../assets/img/placeholders/maps.png';}">
             </div>
             
             <!-- Add these columns at the bottom of the image card -->
-            <div class="image-card-info" style="margin-top: auto; display: flex; width: 100%;">
-                <div class="info-item" style="flex: 1; text-align: center;">
+            <div class="image-card-info">
+                <div class="info-item">
                     <span class="info-label">Map ID:</span>
                     <span class="info-value"><?= $map['mapid'] ?></span>
                 </div>
-                <div class="info-item" style="flex: 1; text-align: center;">
+                <div class="info-item">
                     <span class="info-label">PNG ID:</span>
                     <span class="info-value"><?= $map['pngId'] ?></span>
                 </div>

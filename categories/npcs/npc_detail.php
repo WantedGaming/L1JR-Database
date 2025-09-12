@@ -46,25 +46,26 @@ include '../../includes/hero.php';
     <!-- First Row: Image and Basic Info -->
     <div class="weapon-detail-row">
         <!-- Image Card -->
-        <div class="weapon-image-card detail-card full-image-card" style="display: flex; flex-direction: column;">
-            <div class="weapon-image-large" style="flex: 1; display: flex; align-items: center; justify-content: center;">
+        <div class="weapon-image-card detail-card full-image-card">
+            <div class="weapon-image-large">
                 <img src="../../assets/img/icons/<?= $npc['spriteId'] ?>.png" 
                      alt="<?= htmlspecialchars(getDisplayName($npc['desc_en'])) ?>" 
+                     loading="eager"
                      onerror="this.onerror=null; this.src='../../assets/img/icons/<?= $npc['spriteId'] ?>.gif'; this.onerror=function(){this.src='../../assets/img/placeholders/npcs.png';}">
             </div>
             
             <!-- Add these columns at the bottom of the image card -->
-            <div class="image-card-info" style="margin-top: auto; display: flex; width: 100%;">
-                <div class="info-item" style="flex: 1; text-align: center;">
+            <div class="image-card-info">
+                <div class="info-item">
                     <span class="info-label">NPC ID:</span>
                     <span class="info-value"><?= $npc['npcid'] ?></span>
                 </div>
-                <div class="info-item" style="flex: 1; text-align: center;">
+                <div class="info-item">
                     <span class="info-label">Sprite ID:</span>
                     <span class="info-value"><?= $npc['spriteId'] ?></span>
                 </div>
                 <?php if ($npc['bowSpritetId'] > 0): ?>
-                <div class="info-item" style="flex: 1; text-align: center;">
+                <div class="info-item">
                     <span class="info-label">Bow Sprite ID:</span>
                     <span class="info-value"><?= $npc['bowSpritetId'] ?></span>
                 </div>
@@ -345,7 +346,8 @@ include '../../includes/hero.php';
                                     <a href="../../categories/maps/map_detail.php?id=<?= $mapId ?>" class="spawn-card-link">
                                         <div class="spawn-card-image">
                                             <img src="<?= $mapImageId > 0 ? $mapImagePath : $placeholderImage ?>" 
-                                                 onerror="if (this.src !== '<?= $mapImagePathJpg ?>') this.src='<?= $mapImagePathJpg ?>'; else if (this.src !== '<?= $mapImagePathJpeg ?>') this.src='<?= $mapImagePathJpeg ?>'; else this.src='<?= $placeholderImage ?>';"
+                                                 loading="lazy"
+                                                 onerror="this.onerror=null; this.src='<?= $placeholderImage ?>';"
                                                  alt="<?= htmlspecialchars($mapData['map_name']) ?>">
                                             <div class="spawn-card-overlay">
                                                 <h3 class="spawn-location-name"><?= htmlspecialchars($mapData['map_name']) ?></h3>

@@ -749,6 +749,30 @@ table.clickable-rows tbody tr.clickable:hover {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Image Card Styles */
+.weapon-image-card.full-image-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.weapon-image-large {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-card-info {
+    margin-top: auto;
+    display: flex;
+    width: 100%;
+}
+
+.image-card-info .info-item {
+    flex: 1;
+    text-align: center;
+}
+
 .detail-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
@@ -1462,8 +1486,8 @@ table.clickable-rows tbody tr.clickable:hover {
 }
 
 .spawn-location-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(255, 110, 62, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(255, 110, 62, 0.3);
 }
 
 .spawn-card-link {
@@ -1484,11 +1508,12 @@ table.clickable-rows tbody tr.clickable:hover {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
+    will-change: transform;
+    transition: transform 0.3s ease;
 }
 
 .spawn-location-card:hover .spawn-card-image img {
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 /* Overlay for text */
@@ -1541,6 +1566,123 @@ table.clickable-rows tbody tr.clickable:hover {
 @media (max-width: 768px) {
     .spawn-locations-grid {
         grid-template-columns: 1fr; /* One card per row on smaller screens */
+    }
+}
+
+/* Map Card Styles */
+.maps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.map-card {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    height: 100%;
+}
+
+.map-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(255, 110, 62, 0.2);
+    border-color: var(--accent);
+}
+
+.map-card-link {
+    display: block;
+    text-decoration: none;
+    color: var(--text);
+    height: 100%;
+}
+
+.map-card-image {
+    height: 180px;
+    overflow: hidden;
+    position: relative;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.map-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.map-card:hover .map-card-image img {
+    transform: scale(1.05);
+}
+
+.map-card-content {
+    padding: 1.2rem;
+}
+
+.map-card-title {
+    font-size: 1.2rem;
+    color: var(--accent);
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(255, 110, 62, 0.3);
+    padding-bottom: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.map-card:hover .map-card-title {
+    color: #ff8c5a;
+}
+
+.map-card-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+}
+
+.map-id {
+    opacity: 0.7;
+}
+
+.map-dungeon-tag, .map-outdoor-tag {
+    padding: 0.3rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.map-dungeon-tag {
+    background-color: rgba(255, 0, 0, 0.2);
+    color: #ff6b6b;
+    border: 1px solid rgba(255, 0, 0, 0.3);
+}
+
+.map-outdoor-tag {
+    background-color: rgba(0, 255, 0, 0.1);
+    color: #4ecdc4;
+    border: 1px solid rgba(0, 255, 0, 0.2);
+}
+
+.no-maps {
+    text-align: center;
+    padding: 3rem;
+    font-size: 1.2rem;
+    opacity: 0.7;
+}
+
+/* Responsive design for maps */
+@media (max-width: 768px) {
+    .maps-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 576px) {
+    .maps-grid {
+        grid-template-columns: 1fr;
     }
 }
 
