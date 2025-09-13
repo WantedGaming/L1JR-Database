@@ -6,6 +6,9 @@ include '../../includes/config.php';
 include '../../includes/functions.php';
 include '../../includes/header.php';
 
+// Add custom CSS for weapon detail page with monster grid styling
+echo '<link rel="stylesheet" href="../../assets/css/map-detail.css">';
+
 // Get weapon ID from URL
 $weaponId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
