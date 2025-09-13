@@ -1,13 +1,131 @@
-/* Monster Cards Grid - Smaller cards to fit more per row */
-.monster-cards-grid {
+/* Full Image Monster Grid - 4 cards per row */
+.full-image-monster-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); /* Multiple cards per row, each ~240px */
-    gap: 1.5rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
     margin-top: 1rem;
     margin-bottom: 1.5rem;
 }
 
-/* Monster card - smaller height */
-.monster-card {
-    height: 240px !important;
+/* Full Image Monster Card */
+.full-image-monster-card {
+    aspect-ratio: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 110, 62, 0.2);
+}
+
+.full-image-monster-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(255, 110, 62, 0.3);
+    border-color: var(--accent);
+}
+
+.full-image-monster-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Monster Background Image */
+.monster-background-image {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.monster-background-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s ease;
+    filter: brightness(0.8);
+}
+
+.full-image-monster-card:hover .monster-background-image img {
+    transform: scale(1.05);
+    filter: brightness(0.9);
+}
+
+/* Monster Overlay */
+.monster-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.monster-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+    line-height: 1.2;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.monster-level {
+    font-size: 0.9rem;
+    color: var(--accent);
+    font-weight: 500;
+    background: rgba(255, 110, 62, 0.2);
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 110, 62, 0.4);
+    display: inline-block;
+    width: fit-content;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+    transition: all 0.3s ease;
+}
+
+.full-image-monster-card:hover .monster-level {
+    background: rgba(255, 110, 62, 0.3);
+    border-color: var(--accent);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .full-image-monster-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .full-image-monster-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+    
+    .monster-overlay {
+        padding: 0.75rem;
+    }
+    
+    .monster-name {
+        font-size: 0.9rem;
+    }
+    
+    .monster-level {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .full-image-monster-grid {
+        grid-template-columns: 1fr;
+    }
 }

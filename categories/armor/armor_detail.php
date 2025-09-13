@@ -69,27 +69,27 @@ include '../../includes/hero.php';
         <div class="weapon-basic-info detail-card">
             <h2 class="weapon-name-large"><?= htmlspecialchars(getDisplayName($armor['desc_en'])) ?></h2>
             <div class="basic-info-grid">
-                <div class="info-item">
+                <div class="info-item" style="flex: 1; text-align: center;">
                     <span class="info-label">Grade:</span>
                     <span class="info-value grade-<?= strtolower($armor['itemGrade']) ?>"><?= normalizeGrade($armor['itemGrade']) ?></span>
                 </div>
-                <div class="info-item">
+                <div class="info-item" style="flex: 1; text-align: center;">
                     <span class="info-label">Type:</span>
                     <span class="info-value"><?= normalizeArmorType($armor['type']) ?></span>
                 </div>
-                <div class="info-item">
+                <div class="info-item" style="flex: 1; text-align: center;">
                     <span class="info-label">Material:</span>
                     <span class="info-value"><?= normalizeMaterial($armor['material']) ?></span>
                 </div>
-                <div class="info-item">
+                <div class="info-item" style="flex: 1; text-align: center;">
                     <span class="info-label">Weight:</span>
                     <span class="info-value"><?= $armor['weight'] ?></span>
                 </div>
-                <div class="info-item">
+                <div class="info-item" style="flex: 1; text-align: center;">
                     <span class="info-label">AC:</span>
                     <span class="info-value damage-value"><?= $armor['ac'] ?></span>
                 </div>
-                <div class="info-item">
+                <div class="info-item" style="flex: 1; text-align: center;">
                     <span class="info-label">Safe Enchant:</span>
                     <span class="info-value enchant-value">+<?= $armor['safenchant'] ?></span>
                 </div>

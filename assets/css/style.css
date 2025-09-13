@@ -1627,7 +1627,7 @@ table.clickable-rows tbody tr.clickable:hover {
 }
 
 .map-card-image {
-    height: 240px;
+    height: 180px;
     overflow: hidden;
     position: relative;
     background-color: rgba(0, 0, 0, 0.3);

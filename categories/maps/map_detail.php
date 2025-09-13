@@ -281,22 +281,18 @@ include '../../includes/hero.php';
                 $monsters = $monstersStmt->fetchAll(PDO::FETCH_ASSOC);
                 
                 if (!empty($monsters)): ?>
-                    <div class="monster-cards-grid">
+                    <div class="full-image-monster-grid">
                         <?php foreach ($monsters as $monster): ?>
-                            <div class="spawn-location-card monster-card">
-                                <a href="../../categories/monsters/monster_detail.php?id=<?= $monster['npcid'] ?>" class="spawn-card-link">
-                                    <div class="spawn-card-image">
+                            <div class="full-image-monster-card">
+                                <a href="../../categories/monsters/monster_detail.php?id=<?= $monster['npcid'] ?>" class="full-image-monster-link">
+                                    <div class="monster-background-image">
                                         <img src="../../assets/img/icons/ms<?= $monster['spriteId'] ?>.png" 
                                             alt="<?= htmlspecialchars(getDisplayName($monster['desc_en'])) ?>" 
                                             onerror="this.onerror=null; this.src='../../assets/img/icons/ms<?= $monster['spriteId'] ?>.gif'; this.onerror=function(){this.src='../../assets/img/placeholders/monsters.png';}">
-                                        <div class="spawn-card-overlay">
-                                            <h3 class="spawn-location-name"><?= htmlspecialchars(getDisplayName($monster['desc_en'])) ?></h3>
-                                            <div class="spawn-location-details">
-                                                <div class="spawn-coordinates">
-                                                    <span class="coordinate-text">Level <?= $monster['lvl'] ?></span>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    </div>
+                                    <div class="monster-overlay">
+                                        <h3 class="monster-name"><?= htmlspecialchars(getDisplayName($monster['desc_en'])) ?></h3>
+                                        <span class="monster-level">Level <?= $monster['lvl'] ?></span>
                                     </div>
                                 </a>
                             </div>
