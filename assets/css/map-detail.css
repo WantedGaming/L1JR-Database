@@ -1,0 +1,13 @@
+/* Monster Cards Grid - Smaller cards to fit more per row */
+.monster-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); /* Multiple cards per row, each ~240px */
+    gap: 1.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Monster card - smaller height */
+.monster-card {
+    height: 240px !important;
+}

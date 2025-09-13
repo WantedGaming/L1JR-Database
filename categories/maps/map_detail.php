@@ -6,6 +6,9 @@ include '../../includes/config.php';
 include '../../includes/functions.php';
 include '../../includes/header.php';
 
+// Add custom CSS for map detail page
+echo '<link rel="stylesheet" href="../../assets/css/map-detail.css">';
+
 // Get map ID from URL
 $mapId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
@@ -104,31 +107,31 @@ include '../../includes/hero.php';
                     </span>
                 </div>
                 <div class="property-item">
-                    <span class="property-label">Markable:</span>
+                    <span class="property-label">Can Bookmark:</span>
                     <span class="property-value <?= $map['markable'] ? 'property-yes' : 'property-no' ?>">
                         <?= $map['markable'] ? '✓' : '✗' ?>
                     </span>
                 </div>
                 <div class="property-item">
-                    <span class="property-label">Teleportable:</span>
+                    <span class="property-label">Can Use Teleport:</span>
                     <span class="property-value <?= $map['teleportable'] ? 'property-yes' : 'property-no' ?>">
                         <?= $map['teleportable'] ? '✓' : '✗' ?>
                     </span>
                 </div>
                 <div class="property-item">
-                    <span class="property-label">Escapable:</span>
+                    <span class="property-label">Use Escape Scrolls:</span>
                     <span class="property-value <?= $map['escapable'] ? 'property-yes' : 'property-no' ?>">
                         <?= $map['escapable'] ? '✓' : '✗' ?>
                     </span>
                 </div>
                 <div class="property-item">
-                    <span class="property-label">Resurrection:</span>
+                    <span class="property-label">Can Ressurect:</span>
                     <span class="property-value <?= $map['resurrection'] ? 'property-yes' : 'property-no' ?>">
                         <?= $map['resurrection'] ? '✓' : '✗' ?>
                     </span>
                 </div>
                 <div class="property-item">
-                    <span class="property-label">Pain Wand:</span>
+                    <span class="property-label">Can Use Pain Wands:</span>
                     <span class="property-value <?= $map['painwand'] ? 'property-yes' : 'property-no' ?>">
                         <?= $map['painwand'] ? '✓' : '✗' ?>
                     </span>
@@ -278,36 +281,20 @@ include '../../includes/hero.php';
                 $monsters = $monstersStmt->fetchAll(PDO::FETCH_ASSOC);
                 
                 if (!empty($monsters)): ?>
-                    <div class="monster-drops-grid">
+                    <div class="monster-cards-grid">
                         <?php foreach ($monsters as $monster): ?>
-                            <div class="monster-drop-card">
-                                <a href="../../categories/monsters/monster_detail.php?id=<?= $monster['npcid'] ?>" class="monster-drop-link">
-                                    <div class="monster-card-content">
-                                        <div class="monster-image">
-                                            <img src="../../assets/img/icons/<?= $monster['spriteId'] ?>.png" 
-                                                alt="<?= htmlspecialchars(getDisplayName($monster['desc_en'])) ?>" 
-                                                onerror="this.onerror=null; this.src='../../assets/img/icons/<?= $monster['spriteId'] ?>.gif'; this.onerror=function(){this.src='../../assets/img/placeholders/monsters.png';}">
-                                        </div>
-                                        <div class="monster-info">
-                                            <h3 class="monster-name"><?= htmlspecialchars(getDisplayName($monster['desc_en'])) ?></h3>
-                                            <div class="monster-stats">
-                                                <div class="monster-stat">
-                                                    <span class="stat-text">Lvl <?= $monster['lvl'] ?></span>
+                            <div class="spawn-location-card monster-card">
+                                <a href="../../categories/monsters/monster_detail.php?id=<?= $monster['npcid'] ?>" class="spawn-card-link">
+                                    <div class="spawn-card-image">
+                                        <img src="../../assets/img/icons/ms<?= $monster['spriteId'] ?>.png" 
+                                            alt="<?= htmlspecialchars(getDisplayName($monster['desc_en'])) ?>" 
+                                            onerror="this.onerror=null; this.src='../../assets/img/icons/ms<?= $monster['spriteId'] ?>.gif'; this.onerror=function(){this.src='../../assets/img/placeholders/monsters.png';}">
+                                        <div class="spawn-card-overlay">
+                                            <h3 class="spawn-location-name"><?= htmlspecialchars(getDisplayName($monster['desc_en'])) ?></h3>
+                                            <div class="spawn-location-details">
+                                                <div class="spawn-coordinates">
+                                                    <span class="coordinate-text">Level <?= $monster['lvl'] ?></span>
                                                 </div>
-                                                <div class="monster-stat">
-                                                    <span class="stat-text">HP: <?= $monster['hp'] ?></span>
-                                                </div>
-                                                <?php if (isset($monster['locx']) && isset($monster['locy'])): ?>
-                                                <div class="monster-stat">
-                                                    <span class="stat-icon">📍</span>
-                                                    <span class="stat-text"><?= $monster['locx'] ?>, <?= $monster['locy'] ?></span>
-                                                </div>
-                                                <?php endif; ?>
-                                                <?php if (isset($monster['count']) && $monster['count'] > 0): ?>
-                                                <div class="monster-stat drop-rate">
-                                                    <span class="stat-text">Count: <?= $monster['count'] ?></span>
-                                                </div>
-                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </div>
@@ -353,7 +340,7 @@ include '../../includes/hero.php';
                             <div class="monster-drop-card">
                                 <a href="../../categories/npcs/npc_detail.php?id=<?= $npc['npcid'] ?>" class="monster-drop-link">
                                     <div class="monster-card-content">
-                                        <div class="monster-image">
+                                        <div class="monster-image map-monster-image">
                                             <img src="../../assets/img/icons/<?= $npc['spriteId'] ?>.png" 
                                                 alt="<?= htmlspecialchars(getDisplayName($npc['desc_en'])) ?>" 
                                                 onerror="this.onerror=null; this.src='../../assets/img/icons/<?= $npc['spriteId'] ?>.gif'; this.onerror=function(){this.src='../../assets/img/placeholders/npcs.png';}">
