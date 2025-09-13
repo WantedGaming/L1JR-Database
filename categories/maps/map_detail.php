@@ -49,7 +49,7 @@ include '../../includes/hero.php';
             <div class="weapon-image-large">
                 <img src="../../assets/img/icons/<?= $map['pngId'] ?>.png" 
                      alt="<?= htmlspecialchars($map['locationname']) ?>" 
-                     onerror="this.onerror=null; this.src='../../assets/img/icons/<?= $map['pngId'] ?>.gif'; this.onerror=function(){this.src='../../assets/img/placeholders/maps.png';}">
+                     onerror="this.onerror=null; this.src='../../assets/img/icons/<?= $map['pngId'] ?>.gif'; this.onerror=function(){this.src='../../assets/img/placeholders/noimage.png';}">
             </div>
             
             <!-- Add these columns at the bottom of the image card -->
