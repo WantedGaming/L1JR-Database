@@ -331,35 +331,18 @@ include '../../includes/hero.php';
                 $npcs = $npcsStmt->fetchAll(PDO::FETCH_ASSOC);
                 
                 if (!empty($npcs)): ?>
-                    <div class="monster-drops-grid">
+                    <div class="full-image-monster-grid">
                         <?php foreach ($npcs as $npc): ?>
-                            <div class="monster-drop-card">
-                                <a href="../../categories/npcs/npc_detail.php?id=<?= $npc['npcid'] ?>" class="monster-drop-link">
-                                    <div class="monster-card-content">
-                                        <div class="monster-image map-monster-image">
-                                            <img src="../../assets/img/icons/<?= $npc['spriteId'] ?>.png" 
-                                                alt="<?= htmlspecialchars(getDisplayName($npc['desc_en'])) ?>" 
-                                                onerror="this.onerror=null; this.src='../../assets/img/icons/<?= $npc['spriteId'] ?>.gif'; this.onerror=function(){this.src='../../assets/img/placeholders/npcs.png';}">
-                                        </div>
-                                        <div class="monster-info">
-                                            <h3 class="monster-name"><?= htmlspecialchars(getDisplayName($npc['desc_en'])) ?></h3>
-                                            <div class="monster-stats">
-                                                <div class="monster-stat">
-                                                    <span class="stat-text">NPC ID: <?= $npc['npcid'] ?></span>
-                                                </div>
-                                                <?php if (isset($npc['locx']) && isset($npc['locy'])): ?>
-                                                <div class="monster-stat">
-                                                    <span class="stat-icon">📍</span>
-                                                    <span class="stat-text"><?= $npc['locx'] ?>, <?= $npc['locy'] ?></span>
-                                                </div>
-                                                <?php endif; ?>
-                                                <?php if (isset($npc['count']) && $npc['count'] > 0): ?>
-                                                <div class="monster-stat drop-rate">
-                                                    <span class="stat-text">Count: <?= $npc['count'] ?></span>
-                                                </div>
-                                                <?php endif; ?>
-                                            </div>
-                                        </div>
+                            <div class="full-image-monster-card">
+                                <a href="../../categories/npcs/npc_detail.php?id=<?= $npc['npcid'] ?>" class="full-image-monster-link">
+                                    <div class="monster-background-image">
+                                        <img src="../../assets/img/icons/<?= $npc['spriteId'] ?>.png" 
+                                            alt="<?= htmlspecialchars(getDisplayName($npc['desc_en'])) ?>" 
+                                            onerror="this.onerror=null; this.src='../../assets/img/icons/<?= $npc['spriteId'] ?>.gif'; this.onerror=function(){this.src='../../assets/img/placeholders/npcs.png';}">
+                                    </div>
+                                    <div class="monster-overlay">
+                                        <h3 class="monster-name"><?= htmlspecialchars(getDisplayName($npc['desc_en'])) ?></h3>
+                                        <span class="monster-level">NPC</span>
                                     </div>
                                 </a>
                             </div>
