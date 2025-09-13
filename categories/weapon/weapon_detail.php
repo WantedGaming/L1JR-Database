@@ -602,38 +602,21 @@ include '../../includes/hero.php';
                 $monsters = $dropsStmt->fetchAll(PDO::FETCH_ASSOC);
                 
                 if (!empty($monsters)): ?>
-                    <div class="monster-drops-grid">
+                    <div class="full-image-monster-grid">
                         <?php foreach ($monsters as $monster): 
                             // Calculate drop chance percentage
                             $dropChance = $monster['chance'] / 1000000 * 100;
                             ?>
-                            <div class="monster-drop-card">
-                                <a href="../../categories/monsters/monster_detail.php?id=<?= $monster['mobId'] ?>" class="monster-drop-link">
-                                    <div class="monster-card-content">
-                                        <div class="monster-image">
-                                            <img src="../../assets/img/icons/<?= $monster['spriteId'] ?>.png" 
-                                                alt="<?= htmlspecialchars(getDisplayName($monster['monster_name'])) ?>" 
-                                                onerror="this.src='../../assets/img/placeholders/monsters.png'">
-                                        </div>
-                                        <div class="monster-info">
-                                            <h3 class="monster-name"><?= htmlspecialchars(getDisplayName($monster['monster_name'])) ?></h3>
-                                            <div class="monster-stats">
-                                                <div class="monster-stat">
-                                                    <span class="stat-text">Lvl <?= $monster['lvl'] ?></span>
-                                                </div>
-                                                <div class="monster-stat">
-                                                    <span class="stat-text">Max <?= $monster['max'] ?></span>
-                                                </div>
-                                                <?php if ($monster['Enchant'] > 0): ?>
-                                                <div class="monster-stat">
-                                                    <span class="stat-text">+<?= $monster['Enchant'] ?></span>
-                                                </div>
-                                                <?php endif; ?>
-                                                <div class="monster-stat drop-rate">
-                                                    <span class="stat-text"><?= number_format($dropChance, 6) ?>%</span>
-                                                </div>
-                                            </div>
-                                        </div>
+                            <div class="full-image-monster-card">
+                                <a href="../../categories/monsters/monster_detail.php?id=<?= $monster['mobId'] ?>" class="full-image-monster-link">
+                                    <div class="monster-background-image">
+                                        <img src="../../assets/img/icons/ms<?= $monster['spriteId'] ?>.png" 
+                                            alt="<?= htmlspecialchars(getDisplayName($monster['monster_name'])) ?>" 
+                                            onerror="this.onerror=null; this.src='../../assets/img/icons/ms<?= $monster['spriteId'] ?>.gif'; this.onerror=function(){this.src='../../assets/img/placeholders/monsters.png';}">
+                                    </div>
+                                    <div class="monster-overlay">
+                                        <h3 class="monster-name"><?= htmlspecialchars(getDisplayName($monster['monster_name'])) ?></h3>
+                                        <span class="monster-level">Drop: <?= number_format($dropChance, 6) ?>%</span>
                                     </div>
                                 </a>
                             </div>
