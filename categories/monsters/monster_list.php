@@ -199,7 +199,7 @@ include '../../includes/hero.php';
                                 <a href="monster_detail.php?id=<?= $monster['npcid'] ?>">
                                     <img src="../../assets/img/icons/ms<?= $monster['spriteId'] ?>.png" 
                                          alt="<?= htmlspecialchars(getDisplayName($monster['desc_en'])) ?>" 
-                                         onerror="this.onerror=null; this.src='../../assets/img/icons/ms<?= $monster['spriteId'] ?>.gif'; this.onerror=function(){this.src='../../assets/img/placeholders/monsters.png';}">
+                                         onerror="this.onerror=null; this.src='../../assets/img/icons/ms<?= $monster['spriteId'] ?>.gif'; this.onerror=function(){this.src='../../assets/img/placeholders/nosprite.png';}">
                                 </a>
                             </td>
                             <td class="weapon-id"><?= $monster['npcid'] ?></td>

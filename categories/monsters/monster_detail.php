@@ -51,7 +51,7 @@ include '../../includes/hero.php';
                 <img src="../../assets/img/icons/ms<?= $monster['spriteId'] ?>.png" 
                      alt="<?= htmlspecialchars(getDisplayName($monster['desc_en'])) ?>" 
                      loading="eager"
-                     onerror="this.onerror=null; this.src='../../assets/img/icons/ms<?= $monster['spriteId'] ?>.gif'; this.onerror=function(){this.src='../../assets/img/placeholders/monsters.png';}">
+                     onerror="this.onerror=null; this.src='../../assets/img/icons/ms<?= $monster['spriteId'] ?>.gif'; this.onerror=function(){this.src='../../assets/img/placeholders/nosprite.png';}">
             </div>
             
             <!-- Add these columns at the bottom of the image card -->
