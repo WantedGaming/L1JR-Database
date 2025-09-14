@@ -57,17 +57,17 @@ include '../../includes/hero.php';
             <!-- Add these columns at the bottom of the image card -->
             <div class="image-card-info">
                 <div class="info-item">
-                    <span class="info-label">Monster ID:</span>
+                    <span class="info-label">NPC ID:</span>
                     <span class="info-value"><?= $monster['npcid'] ?></span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Sprite ID:</span>
                     <span class="info-value"><?= $monster['spriteId'] ?></span>
                 </div>
-                <?php if ($monster['bowSpritetId'] > 0): ?>
+                <?php if ($monster['classId'] > 0): ?>
                 <div class="info-item">
-                    <span class="info-label">Bow Sprite ID:</span>
-                    <span class="info-value"><?= $monster['bowSpritetId'] ?></span>
+                    <span class="info-label">Class ID:</span>
+                    <span class="info-value"><?= $monster['classId'] ?></span>
                 </div>
                 <?php endif; ?>
             </div>
@@ -205,13 +205,13 @@ include '../../includes/hero.php';
                     </span>
                 </div>
                 <div class="property-item">
-                    <span class="property-label">Aggressive to Polymorphs:</span>
+                    <span class="property-label">Aggressive to Poly:</span>
                     <span class="property-value <?= $monster['is_agro_poly'] === 'true' ? 'property-yes' : 'property-no' ?>">
                         <?= $monster['is_agro_poly'] === 'true' ? '✓' : '✗' ?>
                     </span>
                 </div>
                 <div class="property-item">
-                    <span class="property-label">Aggressive to Invisible:</span>
+                    <span class="property-label">Aggressive to Invis:</span>
                     <span class="property-value <?= $monster['is_agro_invis'] === 'true' ? 'property-yes' : 'property-no' ?>">
                         <?= $monster['is_agro_invis'] === 'true' ? '✓' : '✗' ?>
                     </span>
@@ -229,7 +229,7 @@ include '../../includes/hero.php';
                     </span>
                 </div>
                 <div class="property-item">
-                    <span class="property-label">Brave Speed:</span>
+                    <span class="property-label">Haste:</span>
                     <span class="property-value <?= $monster['is_bravespeed'] === 'true' ? 'property-yes' : 'property-no' ?>">
                         <?= $monster['is_bravespeed'] === 'true' ? '✓' : '✗' ?>
                     </span>
