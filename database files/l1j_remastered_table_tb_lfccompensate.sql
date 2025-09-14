@@ -14,12 +14,3 @@ CREATE TABLE `tb_lfccompensate` (
   `QUANTITY` int(50) DEFAULT 0,
   `LEVEL` int(10) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=euckr COLLATE=euckr_korean_ci;
-
---
--- Dumping data for table `tb_lfccompensate`
---
-
-INSERT INTO `tb_lfccompensate` (`ID`, `LFCID`, `PARTITION`, `TYPE`, `IDENTITY`, `QUANTITY`, `LEVEL`) VALUES
-(1, 1, 1, 'item', 41159, 10, 0),
-(2, 3, 1, 'item', 41159, 10, 0),
-(3, 9, 1, 'item', 41159, 10, 0);

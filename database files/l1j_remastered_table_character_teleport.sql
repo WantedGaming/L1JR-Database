@@ -18,16 +18,3 @@ CREATE TABLE `character_teleport` (
   `randomY` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `item_obj_id` int(10) UNSIGNED NOT NULL DEFAULT 0
 ) ENGINE=MyISAM DEFAULT CHARSET=euckr COLLATE=euckr_korean_ci;
-
---
--- Dumping data for table `character_teleport`
---
-
-INSERT INTO `character_teleport` (`id`, `num_id`, `speed_id`, `char_id`, `name`, `locx`, `locy`, `mapid`, `randomX`, `randomY`, `item_obj_id`) VALUES
-(299679280, 0, -1, 268500218, 'test', 32579, 32940, 0, 0, 0, 0),
-(299679282, 0, -1, 268457033, 'Juvid', 32613, 32745, 4, 0, 0, 0),
-(299679283, 1, -1, 268457033, 'aanon', 33108, 33356, 4, 0, 0, 0),
-(299679284, 2, -1, 268457033, 'Kuen', 32630, 32801, 4, 0, 0, 0),
-(299679285, 0, -1, 299879861, 'Patata', 34042, 32287, 4, 0, 0, 0),
-(299679286, 0, -1, 334059223, 'Door_Not_Working', 32775, 32806, 2, 0, 0, 0),
-(299679287, 1, -1, 334059223, 'Door_Working', 32664, 32808, 2, 0, 0, 0);

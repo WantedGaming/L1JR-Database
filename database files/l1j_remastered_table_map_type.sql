@@ -10,11 +10,3 @@ CREATE TABLE `map_type` (
   `desc` varchar(50) DEFAULT NULL,
   `type` enum('COMBAT','SAFETY','NORMAL') NOT NULL DEFAULT 'NORMAL'
 ) ENGINE=InnoDB DEFAULT CHARSET=euckr COLLATE=euckr_korean_ci;
-
---
--- Dumping data for table `map_type`
---
-
-INSERT INTO `map_type` (`mapId`, `desc`, `type`) VALUES
-(2006, 'Metis Playground', 'COMBAT'),
-(5153, 'Death Match Scene', 'COMBAT');

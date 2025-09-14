@@ -17,11 +17,3 @@ CREATE TABLE `connect_reward` (
   `reward_finish_date` datetime DEFAULT NULL,
   `is_use` enum('true','false') NOT NULL DEFAULT 'true'
 ) ENGINE=InnoDB DEFAULT CHARSET=euckr COLLATE=euckr_korean_ci;
-
---
--- Dumping data for table `connect_reward`
---
-
-INSERT INTO `connect_reward` (`id`, `description`, `desc_kr`, `reward_type`, `reward_item_id`, `reward_item_count`, `reward_interval_minute`, `reward_start_date`, `reward_finish_date`, `is_use`) VALUES
-(1, 'Standby server reward', '오픈대기 접속 보상', 'STANBY_SERVER', 7021, 1, 10, NULL, NULL, 'true'),
-(2, 'Stay connected reward', '접속 유지 보상', 'NORMAL', 40308, 5000, 60, NULL, NULL, 'true');

@@ -23,10 +23,3 @@ CREATE TABLE `character_package_warehouse` (
   `special_enchant` int(11) DEFAULT NULL,
   `doll_ablity` int(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=euckr COLLATE=euckr_korean_ci;
-
---
--- Dumping data for table `character_package_warehouse`
---
-
-INSERT INTO `character_package_warehouse` (`id`, `account_name`, `item_id`, `item_name`, `count`, `is_equipped`, `enchantlvl`, `is_id`, `durability`, `charge_count`, `remaining_time`, `last_used`, `attr_enchantlvl`, `bless`, `special_enchant`, `doll_ablity`) VALUES
-(332536124, 'test2222@test.com', 3000062, '성장의 낚시 세트', 1, 0, 0, 0, 0, 0, 0, NULL, 0, 1, 0, 0);

@@ -32,10 +32,3 @@ CREATE TABLE `ub_settings` (
   `hpr_bonus` int(10) NOT NULL DEFAULT 0,
   `mpr_bonus` int(10) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=euckr COLLATE=euckr_korean_ci;
-
---
--- Dumping data for table `ub_settings`
---
-
-INSERT INTO `ub_settings` (`ub_id`, `ub_name`, `ub_mapid`, `ub_area_x1`, `ub_area_y1`, `ub_area_x2`, `ub_area_y2`, `min_lvl`, `max_lvl`, `max_player`, `enter_royal`, `enter_knight`, `enter_mage`, `enter_elf`, `enter_darkelf`, `enter_dragonknight`, `enter_illusionist`, `enter_Warrior`, `enter_Fencer`, `enter_Lancer`, `enter_male`, `enter_female`, `use_pot`, `hpr_bonus`, `mpr_bonus`) VALUES
-(1, 'Giran Colosseum', 5557, 33512, 32679, 33557, 32727, 65, 99, 50, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0);
