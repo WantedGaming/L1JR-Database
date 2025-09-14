@@ -44,11 +44,66 @@ if (!empty($searchTerm)) {
 
 // Database query with pagination and filters
 try {
-    // Get total number of skills with filters
-    $countSql = "SELECT COUNT(*) FROM skills $whereClause";
-    $countStmt = $pdo->prepare($countSql);
+    // Build the base queries for both active and passive skills
+    $activeSkillsQuery = "SELECT 
+        skill_id as id, 
+        'active' as skill_type,
+        skill_id, 
+        name, 
+        desc_kr, 
+        desc_en, 
+        skill_level, 
+        grade, 
+        classType, 
+        mpConsume, 
+        hpConsume, 
+        type
+        FROM skills $whereClause";
+    
+    $passiveSkillsQuery = "SELECT 
+        passive_id as id,
+        'passive' as skill_type,
+        passive_id as skill_id,
+        name,
+        desc_kr,
+        desc_en,
+        0 as skill_level,
+        grade,
+        class_type as classType,
+        0 as mpConsume,
+        0 as hpConsume,
+        'PASSIVE' as type
+        FROM skills_passive WHERE desc_en != '' AND desc_en != 'none' AND desc_en IS NOT NULL";
+    
+    // Add filters for passive skills if needed
+    if (!empty($gradeFilter)) {
+        $passiveSkillsQuery .= " AND grade = :grade";
+    }
+    if (!empty($classFilter)) {
+        $passiveSkillsQuery .= " AND class_type = :class_type";
+    }
+    if (!empty($searchTerm)) {
+        $passiveSkillsQuery .= " AND (desc_en LIKE :search OR name LIKE :search)";
+    }
+    
+    // Combine both queries
+    $combinedQuery = "($activeSkillsQuery) UNION ALL ($passiveSkillsQuery) ORDER BY skill_level ASC, id ASC";
+    
+    // Get total count
+    $countQuery = "SELECT COUNT(*) FROM (($activeSkillsQuery) UNION ALL ($passiveSkillsQuery)) as combined_skills";
+    $countStmt = $pdo->prepare($countQuery);
     foreach ($params as $key => $value) {
         $countStmt->bindValue($key, $value);
+    }
+    // Bind parameters for passive skills query too
+    if (!empty($gradeFilter)) {
+        $countStmt->bindValue(':grade', $gradeFilter);
+    }
+    if (!empty($classFilter)) {
+        $countStmt->bindValue(':class_type', $classFilter);
+    }
+    if (!empty($searchTerm)) {
+        $countStmt->bindValue(':search', "%$searchTerm%");
     }
     $countStmt->execute();
     $totalSkills = $countStmt->fetchColumn();
@@ -62,12 +117,23 @@ try {
     }
     
     // Get skills for current page with filters
-    $sql = "SELECT * FROM skills $whereClause ORDER BY skill_level ASC, skill_id ASC LIMIT :limit OFFSET :offset";
-    $stmt = $pdo->prepare($sql);
+    $finalQuery = "($activeSkillsQuery) UNION ALL ($passiveSkillsQuery) ORDER BY skill_level ASC, id ASC LIMIT :limit OFFSET :offset";
+    $stmt = $pdo->prepare($finalQuery);
     
-    // Bind filter parameters
+    // Bind filter parameters for active skills
     foreach ($params as $key => $value) {
         $stmt->bindValue($key, $value);
+    }
+    
+    // Bind filter parameters for passive skills
+    if (!empty($gradeFilter)) {
+        $stmt->bindValue(':grade', $gradeFilter);
+    }
+    if (!empty($classFilter)) {
+        $stmt->bindValue(':class_type', $classFilter);
+    }
+    if (!empty($searchTerm)) {
+        $stmt->bindValue(':search', "%$searchTerm%");
     }
     
     // Bind pagination parameters
@@ -85,25 +151,46 @@ try {
 
 // Get unique values for filter dropdowns
 try {
-    $gradeStmt = $pdo->query("SELECT DISTINCT grade FROM skills ORDER BY FIELD(grade, 'ONLY', 'MYTH', 'LEGEND', 'RARE', 'NORMAL')");
+    // Get grades from both active and passive skills
+    $gradeQuery = "SELECT DISTINCT grade FROM (
+        (SELECT grade FROM skills WHERE desc_en != '' AND desc_en != 'none' AND desc_en IS NOT NULL)
+        UNION
+        (SELECT grade FROM skills_passive WHERE desc_en != '' AND desc_en != 'none' AND desc_en IS NOT NULL)
+    ) as combined_grades ORDER BY FIELD(grade, 'ONLY', 'MYTH', 'LEGEND', 'RARE', 'NORMAL')";
+    $gradeStmt = $pdo->query($gradeQuery);
     $grades = $gradeStmt->fetchAll(PDO::FETCH_COLUMN);
     
-    $classStmt = $pdo->query("SELECT DISTINCT classType FROM skills WHERE classType != 'none' ORDER BY classType");
+    // Get classes from both active and passive skills  
+    $classQuery = "SELECT DISTINCT classType FROM (
+        (SELECT classType FROM skills WHERE classType != 'none' AND desc_en != '' AND desc_en != 'none' AND desc_en IS NOT NULL)
+        UNION
+        (SELECT class_type as classType FROM skills_passive WHERE class_type != 'none' AND desc_en != '' AND desc_en != 'none' AND desc_en IS NOT NULL)
+    ) as combined_classes ORDER BY classType";
+    $classStmt = $pdo->query($classQuery);
     $classes = $classStmt->fetchAll(PDO::FETCH_COLUMN);
 } catch(PDOException $e) {
     $grades = [];
     $classes = [];
 }
 
-// Function to get skill icon from skill_info
-function getSkillIcon($skillId, $pdo) {
+// Function to get skill icon from skill_info or passive skills
+function getSkillIcon($skillId, $skillType, $pdo) {
     try {
-        $stmt = $pdo->prepare("SELECT onIconId FROM skills_info WHERE skillId = :id");
-        $stmt->bindValue(':id', $skillId, PDO::PARAM_INT);
-        $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        
-        return $result ? $result['onIconId'] : 0;
+        if ($skillType === 'active') {
+            // For active skills, get from skills_info table
+            $stmt = $pdo->prepare("SELECT onIconId FROM skills_info WHERE skillId = :id");
+            $stmt->bindValue(':id', $skillId, PDO::PARAM_INT);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result ? $result['onIconId'] : 0;
+        } else {
+            // For passive skills, get from skills_passive table
+            $stmt = $pdo->prepare("SELECT on_icon_id FROM skills_passive WHERE passive_id = :id");
+            $stmt->bindValue(':id', $skillId, PDO::PARAM_INT);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result ? $result['on_icon_id'] : 0;
+        }
     } catch(PDOException $e) {
         return 0;
     }
@@ -163,12 +250,13 @@ function getSkillIcon($skillId, $pdo) {
                         <th class="icon-col">Icon</th>
                         <th class="id-col">ID</th>
                         <th class="name-col">Name</th>
+                        <th class="type-col">Skill Type</th>
                         <th class="level-col">Level</th>
                         <th class="grade-col">Grade</th>
                         <th class="class-col">Class</th>
                         <th class="mp-col">MP</th>
                         <th class="hp-col">HP</th>
-                        <th class="type-col">Type</th>
+                        <th class="category-col">Category</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -176,10 +264,13 @@ function getSkillIcon($skillId, $pdo) {
                         // Skip skills with empty or meaningless descriptions
                         if (empty(trim($skill['desc_en'])) || strtolower(trim($skill['desc_en'])) === 'none' || trim($skill['desc_en']) === '') continue;
                         
-                        // Get the icon ID from skills_info
-                        $iconId = getSkillIcon($skill['skill_id'], $pdo);
+                        // Get the icon ID based on skill type
+                        $iconId = getSkillIcon($skill['skill_id'], $skill['skill_type'], $pdo);
+                        
+                        // Determine the detail page URL based on skill type
+                        $detailUrl = "skill_detail.php?id={$skill['skill_id']}&type={$skill['skill_type']}";
                         ?>
-                        <tr class="weapon-row clickable" onclick="window.location.href='skill_detail.php?id=<?= $skill['skill_id'] ?>';">
+                        <tr class="weapon-row clickable" onclick="window.location.href='<?= $detailUrl ?>';">
                             <td class="weapon-icon">
                                 <img src="../../assets/img/icons/<?= $iconId ?>.png" 
                                      alt="<?= htmlspecialchars($skill['desc_en']) ?>" 
@@ -188,6 +279,11 @@ function getSkillIcon($skillId, $pdo) {
                             <td class="weapon-id"><?= $skill['skill_id'] ?></td>
                             <td class="weapon-name">
                                 <?= htmlspecialchars($skill['desc_en']) ?>
+                            </td>
+                            <td class="weapon-skill-type">
+                                <span class="skill-type-badge skill-type-<?= $skill['skill_type'] ?>">
+                                    <?= ucfirst($skill['skill_type']) ?>
+                                </span>
                             </td>
                             <td class="weapon-level"><?= $skill['skill_level'] ?></td>
                             <td class="weapon-grade"><?= $skill['grade'] ?></td>

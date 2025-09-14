@@ -9,8 +9,9 @@ include '../../includes/header.php';
 // Add custom CSS if needed
 // echo '<link rel="stylesheet" href="../../assets/css/map-detail.css">';
 
-// Get skill ID from URL
+// Get skill ID and type from URL
 $skillId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+$skillType = isset($_GET['type']) ? $_GET['type'] : 'active';
 
 if (!$skillId) {
     echo "<div class='error-message'>No skill specified.</div>";
@@ -18,28 +19,83 @@ if (!$skillId) {
     exit;
 }
 
-// Fetch skill details from database
+// Fetch skill details from database based on type
 try {
-    // Get skill information
-    $stmt = $pdo->prepare("SELECT s.*, si.* 
-                          FROM skills s 
-                          LEFT JOIN skills_info si ON s.skill_id = si.skillId 
-                          WHERE s.skill_id = :id");
-    $stmt->bindValue(':id', $skillId, PDO::PARAM_INT);
-    $stmt->execute();
-    $skill = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    if (!$skill) {
-        echo "<div class='error-message'>Skill not found.</div>";
-        include '../../includes/footer.php';
-        exit;
+    if ($skillType === 'active') {
+        // Get active skill information
+        $stmt = $pdo->prepare("SELECT s.*, si.* 
+                              FROM skills s 
+                              LEFT JOIN skills_info si ON s.skill_id = si.skillId 
+                              WHERE s.skill_id = :id");
+        $stmt->bindValue(':id', $skillId, PDO::PARAM_INT);
+        $stmt->execute();
+        $skill = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if (!$skill) {
+            echo "<div class='error-message'>Active skill not found.</div>";
+            include '../../includes/footer.php';
+            exit;
+        }
+        
+        // Check if this skill has a passive skill
+        $passiveStmt = $pdo->prepare("SELECT * FROM skills_passive WHERE back_active_skill_id = :id");
+        $passiveStmt->bindValue(':id', $skillId, PDO::PARAM_INT);
+        $passiveStmt->execute();
+        $passiveSkill = $passiveStmt->fetch(PDO::FETCH_ASSOC);
+        
+    } else {
+        // Get passive skill information
+        $stmt = $pdo->prepare("SELECT *, 
+                              passive_id as skill_id,
+                              'PASSIVE' as type,
+                              class_type as classType,
+                              0 as mpConsume,
+                              0 as hpConsume,
+                              0 as skill_level,
+                              '' as buffDuration_txt,
+                              0 as reuseDelay,
+                              '' as effect_txt,
+                              'NONE' as target,
+                              'ME' as target_to,
+                              '' as target_to_txt,
+                              'NONE' as attr,
+                              0 as ranged,
+                              0 as area,
+                              0 as probability_value,
+                              0 as probability_dice,
+                              0 as damage_value,
+                              0 as damage_dice,
+                              0 as damage_dice_count,
+                              'false' as is_through,
+                              0 as itemConsumeId,
+                              0 as itemConsumeCount,
+                              0 as castgfx,
+                              0 as castgfx2,
+                              0 as castgfx3,
+                              0 as action_id,
+                              0 as action_id2,
+                              0 as action_id3,
+                              0 as sysmsgID_happen,
+                              0 as sysmsgID_stop,
+                              0 as sysmsgID_fail,
+                              'false' as fixDelay,
+                              0 as delayGroupId,
+                              0 as alignment,
+                              on_icon_id as onIconId,
+                              tooltip_str_id as tooltipStrId
+                              FROM skills_passive WHERE passive_id = :id");
+        $stmt->bindValue(':id', $skillId, PDO::PARAM_INT);
+        $stmt->execute();
+        $skill = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if (!$skill) {
+            echo "<div class='error-message'>Passive skill not found.</div>";
+            include '../../includes/footer.php';
+            exit;
+        }
+        
+        $passiveSkill = null; // Passive skills don't have linked passives
     }
-    
-    // Check if this skill has a passive skill
-    $passiveStmt = $pdo->prepare("SELECT * FROM skills_passive WHERE back_active_skill_id = :id");
-    $passiveStmt->bindValue(':id', $skillId, PDO::PARAM_INT);
-    $passiveStmt->execute();
-    $passiveSkill = $passiveStmt->fetch(PDO::FETCH_ASSOC);
     
     // Set hero title to skill name
     $page_hero_title = $skill['desc_en'];
@@ -107,6 +163,11 @@ include '../../includes/hero.php';
         <!-- Basic Info Card -->
         <div class="weapon-basic-info detail-card">
             <h2 class="weapon-name-large"><?= htmlspecialchars($skill['desc_en']) ?></h2>
+            <div class="skill-type-badge-container">
+                <span class="skill-type-badge skill-type-<?= $skillType ?>">
+                    <?= ucfirst($skillType) ?> Skill
+                </span>
+            </div>
             <div class="basic-info-grid">
                 <div class="info-item">
                     <span class="info-label">Grade:</span>
@@ -443,7 +504,7 @@ include '../../includes/hero.php';
                 </div>
                 <?php endif; ?>
                 
-                <?php if ($skill['isPassiveSpell'] === 'true'): ?>
+                <?php if ($skillType === 'passive'): ?>
                 <div class="property-item accent">
                     <span class="property-label">Passive Skill:</span>
                     <span class="property-value">Yes</span>
@@ -462,7 +523,7 @@ include '../../includes/hero.php';
                 <?php 
                 // If no additional properties
                 if ($skill['fixDelay'] !== 'true' && $skill['delayGroupId'] == 0 && $skill['alignment'] == 0 && 
-                    $skill['isPassiveSpell'] !== 'true' && !$passiveSkill): 
+                    $skillType !== 'passive' && !$passiveSkill): 
                 ?>
                 <div class="no-data-message">No additional properties defined</div>
                 <?php endif; ?>
