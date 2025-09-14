@@ -66,6 +66,9 @@ $is_doll_page = strpos($_SERVER['SCRIPT_NAME'], 'dolls') !== false;
 foreach ($css_paths as $path) {
     echo "<!-- CSS path check: $path - " . (file_exists($path) ? "EXISTS" : "NOT FOUND") . " -->";
 }
+
+// Determine if current page is the commands page
+$is_commands_page = strpos($_SERVER['SCRIPT_NAME'], 'commands.php') !== false;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -150,7 +153,13 @@ foreach ($css_paths as $path) {
                             <li><a href="<?php echo $base_url; ?>categories/maps/maps_list.php">Maps</a></li>
                         </ul>
                     </li>
-                    <!-- Add more navigation items as needed -->
+                    <!-- Commands Link -->
+                    <li>
+                        <a href="<?php echo $base_url; ?>pages/commands.php" 
+                           class="<?php echo $is_commands_page ? 'active' : ''; ?>">
+                           Commands
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </div>
