@@ -28,9 +28,9 @@ include 'includes/hero.php';
             } else if ($category === 'Maps') {
                 $link = 'categories/maps/maps_list.php';
             } else if ($category === 'Skills') {
-                $link = 'categories/skills/skill_list.php';
+                $link = 'categories/skill/skill_list.php';
             } else if ($category === 'Polymorph') {
-                $link = 'categories/polymorphs/polymorph_list.php';
+                $link = 'categories/polymorph/polymorph_list.php';
             } else {
                 // For other categories, use the default pattern
                 $link = strtolower($category) . '.php';

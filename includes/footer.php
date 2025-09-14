@@ -11,8 +11,8 @@
                     <a href="terms.php">Terms of Service</a>
                 </div>
                 <p>&copy; <?php echo date('Y'); ?> L1J-R Database. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+                </div>
+                </div>
+</footer>
 </body>
 </html>
