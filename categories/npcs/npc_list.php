@@ -150,7 +150,7 @@ include '../../includes/hero.php';
                         <tr class="weapon-row">
                             <td class="weapon-icon">
                                 <a href="npc_detail.php?id=<?= $npc['npcid'] ?>">
-                                    <img src="../../assets/img/icons/<?= $npc['spriteId'] ?>.png" 
+                                    <img src="../../assets/img/icons/npc<?= $npc['spriteId'] ?>.png" 
                                          alt="<?= htmlspecialchars(getDisplayName($npc['desc_en'])) ?>" 
                                          onerror="this.onerror=null; this.src='../../assets/img/icons/<?= $npc['spriteId'] ?>.gif'; this.onerror=function(){this.src='../../assets/img/placeholders/npcs.png';}">
                                 </a>

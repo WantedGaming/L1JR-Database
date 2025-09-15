@@ -160,6 +160,15 @@ $is_commands_page = strpos($_SERVER['SCRIPT_NAME'], 'commands.php') !== false;
                            Commands
                         </a>
                     </li>
+                    
+                    <!-- Admin Link -->
+                    <li>
+                        <a href="<?php echo $base_url; ?>admin/" 
+                           class="admin-link"
+                           title="Database Administration">
+                           <i class="admin-icon">⚙</i> Admin
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </div>
