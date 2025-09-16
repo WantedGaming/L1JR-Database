@@ -1,0 +1,284 @@
+;Live
+Long Sword
+Axe
+Lamp
+2H Sword
+Adena
+Cleaner
+Monster Eye
+Skeleton
+Slime
+On
+Turn On
+No Oil
+Elven Dagger
+Orc Dagger
+Athame
+Scalpel
+Katana
+Tsurugi
+Werewolf
+Elder
+Mace
+Door
+Corpse
+Meat
+Bow
+Spear
+Lesser Healing Potion
+Maple Wand
+Pine Wand
+Oak Wand
+'Jelgo Mer' Spellbook
+'Jude Orc Yak' Spellbook
+'Enal 9' Spellbook
+'Jizaja Jozaja Juzaja' Spellbook
+'Pratavya' Spellbook
+'Dayen Pufels' Spellbook
+'Lep Ges Ben Jea' Spellbook
+'Prirucheni' Spellbook
+'Elb Illo' Spellbook
+'Ber Yed Hore' Spellbook
+'Benzar Borgav' Spellbook
+'Tar' Spellbook
+'Yum Yum' Spellbook
+'Kernod Well' Spellbook
+'Elam Ebou' Spellbook
+'Duam Snat' Spellbook
+'Andoba Vegarin' Spellbook
+'Be Forbridern' Spellbook
+'Hakem Mush' Spellbook
+'Belroks Nep' Spellbook
+'Fubi Bletch' Spellbook
+'Temov' Spellbook
+'Garben De' Spellbook
+'Reed Mi' Spellbook
+'Kirje' Spellbook
+Scroll of Identify
+Stone Golem
+Zombie
+Dwarf
+Orc
+Battle Axe
+Arrows
+Bardiche
+Bill-guisarme
+Elven Bow
+Orcish Bow
+Broad Sword
+Candle
+Carrot
+Club
+Dagger
+Bec de Corbin
+Egg
+Fauchard
+Flail
+Glaive
+Guisarme
+Halberd
+Horn
+Javelin
+Key
+Lance
+Lemon
+Lucern Hammer
+Morning Star
+Orange
+Pizza
+Partisan
+Staff
+Lancer
+Ring
+Rune Sword
+Scimitar
+Silver Arrows
+Dwarf Axe
+Elven Spear
+Orc Spear
+Dwarf Short Sword
+Elven Short Sword
+Orcish Short Sword
+Short Sword
+Stiletto
+Trident
+Unicorn Horn
+Voulge
+Yumi
+Apple
+Banana
+Fortune Cookie
+Cream Pie
+Elven Wafer
+War Hammer
+Gunter's House
+Gereng's House
+Log Cabin
+Village
+Leather Armor
+On
+Elven Leather Helm
+Leather Cap
+Orcish Helm
+Skull Helm
+Dwarvish Iron Helm
+Hard Hat
+Fedora
+Conical Hat
+Peaked Hood
+Dented Pot
+Helmet
+Plumed Helm
+Helm of Brilliance
+Etched Helm
+Helm of Opposite Alignment
+Crested Helm
+Helm of Telepathy
+Visored Helm
+Gray Dragon Scale Mail
+Red Dragon Armor
+White Dragon Armor
+Orange Dragon Scale Mail
+Black Dragon Scale Mail
+Blue Dragon Armor
+Green Dragon Armor
+Yellow Dragon Scale Mail
+Gray Dragon Scales
+Red Dragon Scales
+White Dragon Scales
+Orange Dragon Scales
+Black Dragon Scales
+Blue Dragon Scales
+Green Dragon Scales
+Yellow Dragon Scales
+Plate Mail
+Crystal Plate Mail
+Bronze Plate Mail
+Splint Mail
+Banded Mail
+Dwarvish Mithril Coat
+Elven Mithril Coat
+Chain Mail
+Orcish Chain Mail
+Crude Chain Mail
+Scale Mail
+Studded Leather Armor
+Ring Mail
+Orcish Ring Mail
+Crude Ring Mail
+Leather Jacket
+T-shirt
+Mummy Wrapping
+Elven Cloak
+Faded Cloak
+Orcish Cloak
+Coarse Cloak
+Dwarvish Cloak
+Hooded Cloak
+Oilskin Cloak
+Slippery Cloak
+Cloak of Protection
+Tattered Cape
+Cloak of Invisibility
+Opera Cloak
+Cloak of Magic Resistance
+Ornamental Cloak
+Cloak of Passage
+Piece of Cloth
+Small Shield
+Elven Shield
+Blue and Green Shield
+Orcish Shield
+White Handled Shield
+Orcish Shield
+Red Eyed Shield
+Large Shield
+Dwarvish Round Shield
+Large Round Shield
+Shield of Reflection
+Polished Silver Shield
+Leather Gloves
+Old Gloves
+Gloves of Fumbling
+Padded Gloves
+Gauntlets of Power
+Riding Gloves
+Gauntlets of Dexterity
+Fencing Gloves
+Low Boots
+Walking Shoes
+Iron Shoes
+Hard Shoes
+High Boots
+Cavalry Boots
+Speed Boots
+Combat Boots
+Water Walking Boots
+Jungle Boots
+Jumping Boots
+Hiking Boots
+Elven Boots
+Mud Boots
+Boots of Fumbling
+Riding Boots
+Levitation Boots
+Snow Boots
+Shirt
+Cloak
+Armor
+Blessed
+Cursed
+Wishing Wand
+Teleport Scroll
+Remaining Fuel
+Potion of Mana
+Cure Poison
+Haste Potion
+Healing Potion
+Purple Healing
+Lesser Healing Potion
+Greater Healing Potion
+Blinding Potion
+Guard
+Ring of Teleport Control
+Potion of Blindness
+Scroll of Curse Removal
+Scroll of Enchant Weapon
+blue
+black
+moment
+while
+Scroll of Enchant Armor
+Vibrates
+glows
+silver
+Violently
+Scroll of Destroy Armor
+Healing Potion
+Frog
+Resurrect Scroll
+Wand of Conjure Monster
+Duel Field
+Wand of Polymorph
+Polymorph Control Ring
+Wand of Call Lightning
+Ebony Wand
+Haste Potion
+Arachnevil
+Orc Fighter
+Orc Archer
+Wolf
+General Merchant^Pandora
+Gunter
+Eagle
+Black Knight
+Black Knight Captain
+Kurtz
+Is this the "Talking Island"?
+I'm pretty sure that's what a Knight from the "House of Red Knight" would say.
+There seems to be no doubt in the information that there are those who are plotting to raise the flag against His Majesty here.
+But, Your Majesty, you are not too concerned, are you? Even though he is Duke Depill's son, what can he do by himself?...
+Watch your language. Do you think that you, as a person like you, can have an opinion on a decision made by His Majesty himself?
+And I went too far!
+Well, let's go back to the castle for now. I must warn you, don't pull out your sword carelessly on anyone.
+Yes, sir!

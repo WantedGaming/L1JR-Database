@@ -12,7 +12,7 @@ include 'includes/hero.php';
         foreach ($categories as $category) {
             $imageName = strtolower($category) . '.png';
             
-            // Determine the correct link path for each category
+             // Determine the correct link path for each category
             if ($category === 'Weapons') {
                 $link = 'categories/weapon/weapon_list.php';
             } else if ($category === 'Armor') {
@@ -31,6 +31,8 @@ include 'includes/hero.php';
                 $link = 'categories/skill/skill_list.php';
             } else if ($category === 'Polymorph') {
                 $link = 'categories/polymorph/polymorph_list.php';
+            } else if ($category === 'Crafting') {
+                $link = 'categories/crafting/crafting_list.php';
             } else {
                 // For other categories, use the default pattern
                 $link = strtolower($category) . '.php';

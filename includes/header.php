@@ -153,6 +153,16 @@ $is_commands_page = strpos($_SERVER['SCRIPT_NAME'], 'commands.php') !== false;
                             <li><a href="<?php echo $base_url; ?>categories/maps/maps_list.php">Maps</a></li>
                         </ul>
                     </li>
+					<li class="dropdown">
+    <a href="categories/crafting/crafting_list.php" class="dropdown-toggle">Crafting</a>
+    <ul class="dropdown-menu">
+        <li><a href="categories/crafting/crafting_list.php">All Recipes</a></li>
+        <li><a href="categories/crafting/crafting_list.php?type=weapon">Weapons</a></li>
+        <li><a href="categories/crafting/crafting_list.php?type=armor">Armor</a></li>
+        <li><a href="categories/crafting/crafting_list.php?type=accessory">Accessories</a></li>
+        <li><a href="categories/crafting/crafting_list.php?type=consumable">Consumables</a></li>
+    </ul>
+</li>
                     <!-- Commands Link -->
                     <li>
                         <a href="<?php echo $base_url; ?>pages/commands.php" 

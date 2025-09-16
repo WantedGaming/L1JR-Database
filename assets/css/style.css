@@ -2785,3 +2785,64 @@ table.clickable-rows tbody tr.clickable:hover {
 .notes-content {
     white-space: pre-line;
 }
+
+/* Material items with images */
+.materials-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.material-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.material-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.material-item.accent {
+    border-left: 4px solid var(--accent-color);
+}
+
+.material-image {
+    width: 48px;
+    height: 48px;
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+}
+
+.material-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.material-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.material-name {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+.material-count {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .materials-list {
+        grid-template-columns: 1fr;
+    }
+}
