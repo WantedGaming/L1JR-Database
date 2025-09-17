@@ -336,9 +336,9 @@ include '../../includes/hero.php';
                             <div class="full-image-monster-card">
                                 <a href="../../categories/npcs/npc_detail.php?id=<?= $npc['npcid'] ?>" class="full-image-monster-link">
                                     <div class="monster-background-image">
-                                        <img src="../../assets/img/icons/<?= $npc['spriteId'] ?>.png" 
+                                        <img src="../../assets/img/icons/npc<?= $npc['spriteId'] ?>.png" 
                                             alt="<?= htmlspecialchars(getDisplayName($npc['desc_en'])) ?>" 
-                                            onerror="this.onerror=null; this.src='../../assets/img/icons/<?= $npc['spriteId'] ?>.gif'; this.onerror=function(){this.src='../../assets/img/placeholders/npcs.png';}">
+                                            onerror="this.onerror=null; this.src='../../assets/img/icons/npc<?= $npc['spriteId'] ?>.gif'; this.onerror=function(){this.src='../../assets/img/placeholders/npcs.png';}">
                                     </div>
                                     <div class="monster-overlay">
                                         <h3 class="monster-name"><?= htmlspecialchars(getDisplayName($npc['desc_en'])) ?></h3>

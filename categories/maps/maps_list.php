@@ -117,7 +117,7 @@ include '../../includes/hero.php';
                             <div class="map-card-image">
                                 <img src="../../assets/img/icons/<?= $map['pngId'] ?>.png" 
                                      alt="<?= htmlspecialchars($map['locationname']) ?>" 
-                                     onerror="this.onerror=null; this.src='../../assets/img/icons/<?= $map['pngId'] ?>.gif'; this.onerror=function(){this.src='../../assets/img/placeholders/noimage.png';}">
+                                     onerror="this.onerror=null; this.src='../../assets/img/icons/<?= $map['pngId'] ?>.jpeg'; this.onerror=function(){this.src='../../assets/img/placeholders/noimage.png';}">
                             </div>
                             <div class="map-card-content">
                                 <h3 class="map-card-title"><?= htmlspecialchars($map['locationname']) ?></h3>
