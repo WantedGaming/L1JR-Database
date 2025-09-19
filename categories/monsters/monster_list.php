@@ -13,7 +13,7 @@ $weakAttrFilter = isset($_GET['weakAttr']) ? sanitizeInput($_GET['weakAttr']) : 
 $searchTerm = isset($_GET['search']) ? sanitizeInput($_GET['search']) : '';
 
 // Pagination settings
-$itemsPerPage = 20;
+$itemsPerPage = 24; // Increased to match maps_list
 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 if ($currentPage < 1) $currentPage = 1;
 
@@ -118,6 +118,10 @@ try {
     $weakAttributes = [];
 }
 
+// Set hero title and description
+$page_hero_title = "Monsters";
+$page_hero_description = "Browse all monsters in the world of Lineage";
+
 include '../../includes/hero.php';
 ?>
 
@@ -178,46 +182,36 @@ include '../../includes/hero.php';
         </form>
     </div>
     
-    <div class="weapons-list-container">
+    <!-- Monsters Card Grid - Updated to match maps_list style -->
+    <div class="monsters-container">
         <?php if (!empty($monsters)): ?>
-            <table class="weapons-table clickable-rows">
-                <thead>
-                    <tr>
-                        <th class="icon-col">Image</th>
-                        <th class="id-col">ID</th>
-                        <th class="name-col">Name</th>
-                        <th class="level-col">Level</th>
-                        <th class="hp-col">HP</th>
-                        <th class="type-col">Type</th>
-                        <th class="exp-col">EXP</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($monsters as $monster): ?>
-                        <tr class="weapon-row">
-                            <td class="weapon-icon">
-                                <a href="monster_detail.php?id=<?= $monster['npcid'] ?>">
-                                    <img src="../../assets/img/icons/ms<?= $monster['spriteId'] ?>.png" 
-                                         alt="<?= htmlspecialchars(getDisplayName($monster['desc_en'])) ?>" 
-                                         onerror="this.onerror=null; this.src='../../assets/img/icons/ms<?= $monster['spriteId'] ?>.gif'; this.onerror=function(){this.src='../../assets/img/placeholders/nosprite.png';}">
-                                </a>
-                            </td>
-                            <td class="weapon-id"><?= $monster['npcid'] ?></td>
-                            <td class="weapon-name">
-                                <a href="monster_detail.php?id=<?= $monster['npcid'] ?>">
-                                    <?= htmlspecialchars(getDisplayName($monster['desc_en'])) ?>
-                                </a>
-                            </td>
-                            <td class="weapon-level"><?= $monster['lvl'] ?></td>
-                            <td class="weapon-hp"><?= $monster['hp'] ?></td>
-                            <td class="weapon-type"><?= $monster['undead'] !== 'NONE' ? normalizeUndeadType($monster['undead']) : 'Normal' ?></td>
-                            <td class="weapon-exp"><?= $monster['exp'] ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+            <div class="maps-grid"> <!-- Using the same class as maps for consistency -->
+                <?php foreach ($monsters as $monster): 
+                    $monsterType = $monster['undead'] !== 'NONE' ? normalizeUndeadType($monster['undead']) : 'Normal';
+                    $typeClass = strtolower(str_replace(' ', '-', $monsterType));
+                ?>
+                    <div class="map-card monster-card <?= $typeClass ?>">
+                        <a href="monster_detail.php?id=<?= $monster['npcid'] ?>" class="map-card-link">
+                            <div class="map-card-image">
+                                <img src="../../assets/img/icons/ms<?= $monster['spriteId'] ?>.png" 
+                                     alt="<?= htmlspecialchars(getDisplayName($monster['desc_en'])) ?>" 
+                                     onerror="this.onerror=null; this.src='../../assets/img/icons/ms<?= $monster['spriteId'] ?>.gif'; this.onerror=function(){this.src='../../assets/img/placeholders/nosprite.png';}">
+                            </div>
+                            <div class="map-card-content">
+                                <h3 class="map-card-title"><?= htmlspecialchars(getDisplayName($monster['desc_en'])) ?></h3>
+                                <div class="map-card-details">
+                                    <span class="map-id">ID: <?= $monster['npcid'] ?></span>
+									<span class="map-id">SP: <?= $monster['spriteId'] ?></span>
+                                    <span class="monster-level">Lv. <?= $monster['lvl'] ?></span>
+                                    <span class="map-dungeon-tag monster-type-<?= $typeClass ?>"><?= $monsterType ?></span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                <?php endforeach; ?>
+            </div>
             
-            <!-- Pagination -->
+            <!-- Pagination - Same as maps_list -->
             <?php if ($totalPages > 1): ?>
                 <div class="pagination">
                     <?php if ($currentPage > 1): ?>
@@ -273,10 +267,233 @@ include '../../includes/hero.php';
             <?php endif; ?>
             
         <?php else: ?>
-            <p class="no-weapons">No monsters found matching your criteria.</p>
+            <p class="no-maps">No monsters found matching your criteria.</p>
         <?php endif; ?>
     </div>
 </main>
+
+<style>
+/* Monster Card Styles to match Maps List */
+.monsters-container {
+    margin-top: 2rem;
+}
+
+.maps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.map-card.monster-card {
+    background-color: var(--secondary);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    height: auto;
+}
+
+.map-card.monster-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(255, 110, 62, 0.25);
+    border-color: var(--accent);
+}
+
+.map-card-link {
+    display: block;
+    text-decoration: none;
+    color: var(--text);
+}
+
+.map-card-image {
+    height: 180px;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+}
+
+.map-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.5s ease;
+}
+
+.map-card:hover .map-card-image img {
+    transform: scale(1.08);
+}
+
+.map-card-content {
+    padding: 1.2rem;
+}
+
+.map-card-title {
+    font-size: 1.2rem;
+    margin: 0 0 0.8rem 0;
+    color: var(--accent);
+    font-weight: 700;
+    text-align: center;
+}
+
+.map-card-details {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.map-id, .monster-level {
+    color: rgba(255, 255, 255, 0.7);
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.3rem 0.6rem;
+    border-radius: 12px;
+}
+
+.map-dungeon-tag, .map-outdoor-tag {
+    padding: 0.3rem 0.6rem;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.map-dungeon-tag {
+    background: rgba(255, 107, 107, 0.2);
+    color: #ff6b6b;
+    border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.map-outdoor-tag {
+    background: rgba(78, 205, 196, 0.2);
+    color: #4ecdc4;
+    border: 1px solid rgba(78, 205, 196, 0.3);
+}
+
+/* Monster type specific styling */
+.monster-type-undead {
+    background: rgba(255, 107, 107, 0.2);
+    color: #ff6b6b;
+    border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.monster-type-animal {
+    background: rgba(78, 205, 196, 0.2);
+    color: #4ecdc4;
+    border: 1px solid rgba(78, 205, 196, 0.3);
+}
+
+.monster-type-demon {
+    background: rgba(255, 0, 255, 0.2);
+    color: #ff00ff;
+    border: 1px solid rgba(255, 0, 255, 0.3);
+}
+
+.monster-type-dragon {
+    background: rgba(255, 140, 0, 0.2);
+    color: #ff8c00;
+    border: 1px solid rgba(255, 140, 0, 0.3);
+}
+
+.monster-type-human {
+    background: rgba(0, 180, 255, 0.2);
+    color: #00b4ff;
+    border: 1px solid rgba(0, 180, 255, 0.3);
+}
+
+.no-maps {
+    text-align: center;
+    padding: 3rem;
+    font-size: 1.2rem;
+    opacity: 0.7;
+    grid-column: 1 / -1;
+}
+
+/* Level-based color coding for monster names */
+.monster-card.low-level .map-card-title {
+    color: #4ecdc4; /* Teal for low levels */
+}
+
+.monster-card.mid-level .map-card-title {
+    color: #ffcc00; /* Yellow for mid levels */
+}
+
+.monster-card.high-level .map-card-title {
+    color: #ff6e3e; /* Orange for high levels */
+}
+
+.monster-card.boss-level .map-card-title {
+    color: #ff00ff; /* Magenta for bosses */
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .maps-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .maps-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1rem;
+    }
+    
+    .map-card-image {
+        height: 160px;
+    }
+    
+    .map-card-content {
+        padding: 1rem;
+    }
+    
+    .map-card-title {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .maps-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .map-card.monster-card {
+        max-width: 320px;
+        margin: 0 auto;
+    }
+}
+</style>
+
+<script>
+// Add level-based styling to cards
+document.addEventListener('DOMContentLoaded', function() {
+    const monsterCards = document.querySelectorAll('.monster-card');
+    
+    monsterCards.forEach(card => {
+        const levelElement = card.querySelector('.monster-level');
+        if (levelElement) {
+            const levelText = levelElement.textContent;
+            const levelMatch = levelText.match(/Lv\.\s*(\d+)/);
+            
+            if (levelMatch) {
+                const level = parseInt(levelMatch[1]);
+                
+                if (level < 20) {
+                    card.classList.add('low-level');
+                } else if (level < 40) {
+                    card.classList.add('mid-level');
+                } else if (level < 60) {
+                    card.classList.add('high-level');
+                } else {
+                    card.classList.add('boss-level');
+                }
+            }
+        }
+    });
+});
+</script>
 
 <?php
 include '../../includes/footer.php';

@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monster Management System</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Additional styles for the monster management interface */
+        .management-container {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .tab-container {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 110, 62, 0.3);
+        }
+        
+        .tab {
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            background-color: var(--secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: none;
+            margin-right: 0.5rem;
+            border-radius: 5px 5px 0 0;
+            transition: all 0.3s ease;
+        }
+        
+        .tab.active {
+            background-color: var(--accent);
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .search-container {
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 0.8rem;
+            background-color: var(--primary);
+            color: var(--text);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        
+        .search-button {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--accent);
+            color: var(--primary);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .monster-preview {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background-color: var(--secondary);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .monster-image {
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--primary);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .monster-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .monster-info {
+            flex: 1;
+        }
+        
+        .monster-name {
+            font-size: 1.4rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        
+        .monster-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 0.8rem;
+        }
+        
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 0.2rem;
+        }
+        
+        .stat-value {
+            font-weight: 500;
+        }
+        
+        .form-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background-color: var(--secondary);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .section-title {
+            color: var(--accent);
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 110, 62, 0.3);
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.2rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-label {
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+            font-weight: 500;
+        }
+        
+        .form-input, .form-select, .form-textarea {
+            padding: 0.8rem;
+            background-color: var(--primary);
+            color: var(--text);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: var(--accent);
+            color: var(--primary);
+        }
+        
+        .btn-secondary {
+            background-color: var(--primary);
+            color: var(--text);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .drop-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 6px;
+            margin-bottom: 1rem;
+        }
+        
+        .drop-item-image {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--primary);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .drop-item-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .drop-item-info {
+            flex: 1;
+        }
+        
+        .drop-item-name {
+            font-weight: 500;
+            margin-bottom: 0.3rem;
+        }
+        
+        .drop-item-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .drop-item-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .spawn-location {
+            padding: 1rem;
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .spawn-info {
+            flex: 1;
+        }
+        
+        .spawn-map {
+            font-weight: 500;
+            margin-bottom: 0.3rem;
+        }
+        
+        .spawn-coords {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .spawn-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .no-preview {
+            text-align: center;
+            padding: 3rem;
+            background-color: var(--secondary);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <a href="#" class="logo">Monster Management</a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Monsters</a></li>
+                    <li><a href="#">Items</a></li>
+                    <li><a href="#">Maps</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle">Admin</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Users</a></li>
+                            <li><a href="#">Settings</a></li>
+                            <li><a href="#">Logs</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="management-container">
+        <h1>Monster Management System</h1>
+        
+        <div class="tab-container">
+            <div class="tab active" data-tab="search">Search Monster</div>
+            <div class="tab" data-tab="npc">NPC Details</div>
+            <div class="tab" data-tab="spawn">Spawn Locations</div>
+            <div class="tab" data-tab="drops">Drops</div>
+        </div>
+        
+        <div class="tab-content active" id="search-tab">
+            <div class="search-container">
+                <input type="text" class="search-input" id="npcid-search" placeholder="Enter NPC ID or name...">
+                <button class="search-button" id="search-button">Search</button>
+            </div>
+            
+            <div id="monster-preview-container">
+                <div class="no-preview">
+                    <p>Search for a monster by NPC ID or name to begin editing</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="npc-tab">
+            <div class="form-section">
+                <h2 class="section-title">NPC Details</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">NPC ID</label>
+                        <input type="text" class="form-input" id="npc-id" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Class ID</label>
+                        <input type="text" class="form-input" id="class-id">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Name (English)</label>
+                        <input type="text" class="form-input" id="name-en">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Name (Korean)</label>
+                        <input type="text" class="form-input" id="name-kr">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Level</label>
+                        <input type="number" class="form-input" id="level">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">HP</label>
+                        <input type="number" class="form-input" id="hp">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">MP</label>
+                        <input type="number" class="form-input" id="mp">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">AC</label>
+                        <input type="number" class="form-input" id="ac">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">STR</label>
+                        <input type="number" class="form-input" id="str">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">CON</label>
+                        <input type="number" class="form-input" id="con">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">DEX</label>
+                        <input type="number" class="form-input" id="dex">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">WIS</label>
+                        <input type="number" class="form-input" id="wis">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">INT</label>
+                        <input type="number" class="form-input" id="intel">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">MR</label>
+                        <input type="number" class="form-input" id="mr">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">EXP</label>
+                        <input type="number" class="form-input" id="exp">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Alignment</label>
+                        <input type="number" class="form-input" id="alignment">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Implementation</label>
+                        <select class="form-select" id="impl">
+                            <option value="L1Monster">L1Monster</option>
+                            <!-- Other implementation options would go here -->
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn btn-secondary" id="cancel-npc">Cancel</button>
+                    <button class="btn btn-primary" id="save-npc">Save Changes</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="spawn-tab">
+            <div class="form-section">
+                <h2 class="section-title">Spawn Locations</h2>
+                
+                <div id="spawn-list">
+                    <div class="no-preview">
+                        <p>No spawn locations found for this monster</p>
+                    </div>
+                </div>
+                
+                <h3 class="section-title" style="margin-top: 2rem;">Add New Spawn Location</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Map ID</label>
+                        <input type="number" class="form-input" id="spawn-mapid">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">X Coordinate</label>
+                        <input type="number" class="form-input" id="spawn-x">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Y Coordinate</label>
+                        <input type="number" class="form-input" id="spawn-y">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Random X Range</label>
+                        <input type="number" class="form-input" id="spawn-randomx" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Random Y Range</label>
+                        <input type="number" class="form-input" id="spawn-randomy" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Min Respawn Delay</label>
+                        <input type="number" class="form-input" id="spawn-min-delay" value="60">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Max Respawn Delay</label>
+                        <input type="number" class="form-input" id="spawn-max-delay" value="120">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Heading</label>
+                        <input type="number" class="form-input" id="spawn-heading" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Count</label>
+                        <input type="number" class="form-input" id="spawn-count" value="1">
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn btn-secondary" id="cancel-spawn">Cancel</button>
+                    <button class="btn btn-primary" id="add-spawn">Add Spawn Location</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="drops-tab">
+            <div class="form-section">
+                <h2 class="section-title">Item Drops</h2>
+                
+                <div id="drops-list">
+                    <div class="no-preview">
+                        <p>No drops found for this monster</p>
+                    </div>
+                </div>
+                
+                <h3 class="section-title" style="margin-top: 2rem;">Add New Drop</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Item ID</label>
+                        <input type="number" class="form-input" id="drop-itemid">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Min Quantity</label>
+                        <input type="number" class="form-input" id="drop-min" value="1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Max Quantity</label>
+                        <input type="number" class="form-input" id="drop-max" value="1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Chance (1 in X)</label>
+                        <input type="number" class="form-input" id="drop-chance" value="1000">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Enchant Level</label>
+                        <input type="number" class="form-input" id="drop-enchant" value="0">
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn btn-secondary" id="cancel-drop">Cancel</button>
+                    <button class="btn btn-primary" id="add-drop">Add Drop</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab switching functionality
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+                    
+                    // Deactivate all tabs and contents
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Activate the clicked tab and corresponding content
+                    tab.classList.add('active');
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                });
+            });
+            
+            // Search functionality
+            const searchButton = document.getElementById('search-button');
+            const npcIdSearch = document.getElementById('npcid-search');
+            
+            searchButton.addEventListener('click', searchMonster);
+            npcIdSearch.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchMonster();
+                }
+            });
+            
+            function searchMonster() {
+                const searchValue = npcIdSearch.value.trim();
+                if (!searchValue) return;
+                
+                // In a real implementation, this would fetch data from a server
+                // For demonstration, we'll use mock data
+                const mockMonster = {
+                    npcid: 45001,
+                    name_en: "Orc",
+                    name_kr: "오크",
+                    level: 5,
+                    hp: 45,
+                    mp: 10,
+                    ac: 8,
+                    str: 13,
+                    con: 12,
+                    dex: 10,
+                    wis: 6,
+                    intel: 5,
+                    mr: 10,
+                    exp: 12,
+                    alignment: 0,
+                    impl: "L1Monster"
+                };
+                
+                displayMonsterPreview(mockMonster);
+                populateNpcForm(mockMonster);
+            }
+            
+            function displayMonsterPreview(monster) {
+                const previewContainer = document.getElementById('monster-preview-container');
+                
+                previewContainer.innerHTML = `
+                    <div class="monster-preview">
+                        <div class="monster-image">
+                            <img src="/assets/img/icon/${monster.npcid}.png" alt="${monster.name_en}" onerror="this.src='/assets/img/icon/default.png'">
+                        </div>
+                        <div class="monster-info">
+                            <h2 class="monster-name">${monster.name_en} (${monster.name_kr})</h2>
+                            <div class="monster-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Level</span>
+                                    <span class="stat-value">${monster.level}</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">HP</span>
+                                    <span class="stat-value">${monster.hp}</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">MP</span>
+                                    <span class="stat-value">${monster.mp}</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">AC</span>
+                                    <span class="stat-value">${monster.ac}</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">EXP</span>
+                                    <span class="stat-value">${monster.exp}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            function populateNpcForm(monster) {
+                document.getElementById('npc-id').value = monster.npcid;
+                document.getElementById('class-id').value = monster.npcid; // In reality, this would be different
+                document.getElementById('name-en').value = monster.name_en;
+                document.getElementById('name-kr').value = monster.name_kr;
+                document.getElementById('level').value = monster.level;
+                document.getElementById('hp').value = monster.hp;
+                document.getElementById('mp').value = monster.mp;
+                document.getElementById('ac').value = monster.ac;
+                document.getElementById('str').value = monster.str;
+                document.getElementById('con').value = monster.con;
+                document.getElementById('dex').value = monster.dex;
+                document.getElementById('wis').value = monster.wis;
+                document.getElementById('intel').value = monster.intel;
+                document.getElementById('mr').value = monster.mr;
+                document.getElementById('exp').value = monster.exp;
+                document.getElementById('alignment').value = monster.alignment;
+                document.getElementById('impl').value = monster.impl;
+            }
+            
+            // Form submission handlers
+            document.getElementById('save-npc').addEventListener('click', function() {
+                // Collect form data and send to server
+                const npcData = {
+                    npcid: document.getElementById('npc-id').value,
+                    classId: document.getElementById('class-id').value,
+                    name_en: document.getElementById('name-en').value,
+                    name_kr: document.getElementById('name-kr').value,
+                    level: document.getElementById('level').value,
+                    hp: document.getElementById('hp').value,
+                    mp: document.getElementById('mp').value,
+                    ac: document.getElementById('ac').value,
+                    str: document.getElementById('str').value,
+                    con: document.getElementById('con').value,
+                    dex: document.getElementById('dex').value,
+                    wis: document.getElementById('wis').value,
+                    intel: document.getElementById('intel').value,
+                    mr: document.getElementById('mr').value,
+                    exp: document.getElementById('exp').value,
+                    alignment: document.getElementById('alignment').value,
+                    impl: document.getElementById('impl').value
+                };
+                
+                // In a real implementation, this would send data to the server
+                console.log('Saving NPC data:', npcData);
+                alert('NPC data saved successfully!');
+            });
+            
+            document.getElementById('add-spawn').addEventListener('click', function() {
+                const spawnData = {
+                    npc_templateid: document.getElementById('npc-id').value,
+                    mapid: document.getElementById('spawn-mapid').value,
+                    locx: document.getElementById('spawn-x').value,
+                    locy: document.getElementById('spawn-y').value,
+                    randomx: document.getElementById('spawn-randomx').value,
+                    randomy: document.getElementById('spawn-randomy').value,
+                    min_respawn_delay: document.getElementById('spawn-min-delay').value,
+                    max_respawn_delay: document.getElementById('spawn-max-delay').value,
+                    heading: document.getElementById('spawn-heading').value,
+                    count: document.getElementById('spawn-count').value
+                };
+                
+                // In a real implementation, this would send data to the server
+                console.log('Adding spawn location:', spawnData);
+                
+                // Add to the UI
+                addSpawnToUI(spawnData);
+                alert('Spawn location added successfully!');
+            });
+            
+            document.getElementById('add-drop').addEventListener('click', function() {
+                const dropData = {
+                    mobId: document.getElementById('npc-id').value,
+                    itemId: document.getElementById('drop-itemid').value,
+                    min: document.getElementById('drop-min').value,
+                    max: document.getElementById('drop-max').value,
+                    chance: document.getElementById('drop-chance').value,
+                    Enchant: document.getElementById('drop-enchant').value
+                };
+                
+                // In a real implementation, this would send data to the server
+                console.log('Adding drop:', dropData);
+                
+                // Add to the UI
+                addDropToUI(dropData);
+                alert('Drop added successfully!');
+            });
+            
+            function addSpawnToUI(spawnData) {
+                const spawnList = document.getElementById('spawn-list');
+                
+                // Remove the "no spawns" message if it exists
+                if (spawnList.querySelector('.no-preview')) {
+                    spawnList.innerHTML = '';
+                }
+                
+                const spawnElement = document.createElement('div');
+                spawnElement.className = 'spawn-location';
+                spawnElement.innerHTML = `
+                    <div class="spawn-info">
+                        <div class="spawn-map">Map ID: ${spawnData.mapid}</div>
+                        <div class="spawn-coords">Coordinates: (${spawnData.locx}, ${spawnData.locy})</div>
+                    </div>
+                    <div class="spawn-actions">
+                        <button class="btn btn-secondary">Edit</button>
+                        <button class="btn btn-danger">Delete</button>
+                    </div>
+                `;
+                
+                spawnList.appendChild(spawnElement);
+            }
+            
+            function addDropToUI(dropData) {
+                const dropsList = document.getElementById('drops-list');
+                
+                // Remove the "no drops" message if it exists
+                if (dropsList.querySelector('.no-preview')) {
+                    dropsList.innerHTML = '';
+                }
+                
+                const dropElement = document.createElement('div');
+                dropElement.className = 'drop-item';
+                dropElement.innerHTML = `
+                    <div class="drop-item-image">
+                        <img src="/assets/img/icon/${dropData.itemId}.png" alt="Item ${dropData.itemId}" onerror="this.src='/assets/img/icon/default_item.png'">
+                    </div>
+                    <div class="drop-item-info">
+                        <div class="drop-item-name">Item ID: ${dropData.itemId}</div>
+                        <div class="drop-item-stats">
+                            <span>Qty: ${dropData.min}-${dropData.max}</span>
+                            <span>Chance: 1/${dropData.chance}</span>
+                            <span>Enchant: +${dropData.Enchant}</span>
+                        </div>
+                    </div>
+                    <div class="drop-item-actions">
+                        <button class="btn btn-secondary">Edit</button>
+                        <button class="btn btn-danger">Delete</button>
+                    </div>
+                `;
+                
+                dropsList.appendChild(dropElement);
+            }
+        });
+    </script>
+</body>
+</html>
