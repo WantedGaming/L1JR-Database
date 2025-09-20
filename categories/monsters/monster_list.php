@@ -189,6 +189,18 @@ include '../../includes/hero.php';
                 <?php foreach ($monsters as $monster): 
                     $monsterType = $monster['undead'] !== 'NONE' ? normalizeUndeadType($monster['undead']) : 'Normal';
                     $typeClass = strtolower(str_replace(' ', '-', $monsterType));
+                    
+                    // Determine level class for color coding
+                    $level = $monster['lvl'];
+                    if ($level < 20) {
+                        $levelClass = 'low-level';
+                    } else if ($level < 40) {
+                        $levelClass = 'mid-level';
+                    } else if ($level < 60) {
+                        $levelClass = 'high-level';
+                    } else {
+                        $levelClass = 'boss-level';
+                    }
                 ?>
                     <div class="map-card monster-card <?= $typeClass ?>">
                         <a href="monster_detail.php?id=<?= $monster['npcid'] ?>" class="map-card-link">
@@ -198,12 +210,11 @@ include '../../includes/hero.php';
                                      onerror="this.onerror=null; this.src='../../assets/img/icons/ms<?= $monster['spriteId'] ?>.gif'; this.onerror=function(){this.src='../../assets/img/placeholders/nosprite.png';}">
                             </div>
                             <div class="map-card-content">
-                                <h3 class="map-card-title"><?= htmlspecialchars(getDisplayName($monster['desc_en'])) ?></h3>
+                                <h3 class="map-card-title <?= $levelClass ?>"><?= htmlspecialchars(getDisplayName($monster['desc_en'])) ?></h3>
                                 <div class="map-card-details">
-                                    <span class="map-id">ID: <?= $monster['npcid'] ?></span>
-									<span class="map-id">SP: <?= $monster['spriteId'] ?></span>
+                                    <span class="map-id map-dungeon-tag">ID: <?= $monster['npcid'] ?></span>
                                     <span class="monster-level">Lv. <?= $monster['lvl'] ?></span>
-                                    <span class="map-dungeon-tag monster-type-<?= $typeClass ?>"><?= $monsterType ?></span>
+									<span class="map-id map-outdoor-tag">Sprite: <?= $monster['spriteId'] ?></span>
                                 </div>
                             </div>
                         </a>
@@ -308,7 +319,7 @@ include '../../includes/hero.php';
 }
 
 .map-card-image {
-    height: 180px;
+    height: 300px;
     overflow: hidden;
     position: relative;
     background: linear-gradient(135deg, var(--primary), var(--secondary));
@@ -361,15 +372,13 @@ include '../../includes/hero.php';
 }
 
 .map-dungeon-tag {
-    background: rgba(255, 107, 107, 0.2);
-    color: #ff6b6b;
-    border: 1px solid rgba(255, 107, 107, 0.3);
+    background: rgba(63, 215, 219, 0.7);
+    color: #f7ffff;
 }
 
 .map-outdoor-tag {
-    background: rgba(78, 205, 196, 0.2);
-    color: #4ecdc4;
-    border: 1px solid rgba(78, 205, 196, 0.3);
+    background: rgba(223, 128, 32, 0.75);
+    color: #f7ffff;
 }
 
 /* Monster type specific styling */
@@ -403,29 +412,29 @@ include '../../includes/hero.php';
     border: 1px solid rgba(0, 180, 255, 0.3);
 }
 
+/* Level-based color coding for monster names */
+.map-card-title.low-level {
+    color: #4ecdc4; /* Teal for low levels */
+}
+
+.map-card-title.mid-level {
+    color: #ffcc00; /* Yellow for mid levels */
+}
+
+.map-card-title.high-level {
+    color: #ff6e3e; /* Orange for high levels */
+}
+
+.map-card-title.boss-level {
+    color: #ff00ff; /* Magenta for bosses */
+}
+
 .no-maps {
     text-align: center;
     padding: 3rem;
     font-size: 1.2rem;
     opacity: 0.7;
     grid-column: 1 / -1;
-}
-
-/* Level-based color coding for monster names */
-.monster-card.low-level .map-card-title {
-    color: #4ecdc4; /* Teal for low levels */
-}
-
-.monster-card.mid-level .map-card-title {
-    color: #ffcc00; /* Yellow for mid levels */
-}
-
-.monster-card.high-level .map-card-title {
-    color: #ff6e3e; /* Orange for high levels */
-}
-
-.monster-card.boss-level .map-card-title {
-    color: #ff00ff; /* Magenta for bosses */
 }
 
 /* Responsive Design */
@@ -465,35 +474,6 @@ include '../../includes/hero.php';
     }
 }
 </style>
-
-<script>
-// Add level-based styling to cards
-document.addEventListener('DOMContentLoaded', function() {
-    const monsterCards = document.querySelectorAll('.monster-card');
-    
-    monsterCards.forEach(card => {
-        const levelElement = card.querySelector('.monster-level');
-        if (levelElement) {
-            const levelText = levelElement.textContent;
-            const levelMatch = levelText.match(/Lv\.\s*(\d+)/);
-            
-            if (levelMatch) {
-                const level = parseInt(levelMatch[1]);
-                
-                if (level < 20) {
-                    card.classList.add('low-level');
-                } else if (level < 40) {
-                    card.classList.add('mid-level');
-                } else if (level < 60) {
-                    card.classList.add('high-level');
-                } else {
-                    card.classList.add('boss-level');
-                }
-            }
-        }
-    });
-});
-</script>
 
 <?php
 include '../../includes/footer.php';
